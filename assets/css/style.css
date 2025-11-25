@@ -1,0 +1,186 @@
+@import 'variables.css';
+@import 'reset.css';
+
+body {
+    background-color: var(--bg-current);
+    color: var(--text-current);
+    transition: background-color 0.4s ease, color 0.4s ease;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    align-items: center;
+}
+
+/* Header */
+header {
+    width: 100%;
+    max-width: var(--max-width);
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-current);
+}
+
+.logo span { color: var(--primary-color); }
+
+.nav-btn {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 8px 16px;
+    border-radius: var(--radius-btn);
+    color: var(--text-current);
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.nav-btn:hover { background: rgba(255, 255, 255, 0.2); }
+
+/* Main Container */
+main {
+    width: 95%;
+    max-width: var(--max-width);
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Tabs de Modos (Pomodoro, Timer, Stopwatch) */
+.mode-tabs {
+    display: flex;
+    justify-content: center;
+    background: var(--card-current);
+    padding: 6px;
+    border-radius: 50px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.mode-btn {
+    padding: 10px 24px;
+    border-radius: 50px;
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: var(--transition);
+}
+
+.mode-btn.active {
+    background-color: var(--primary-color);
+    color: white;
+    box-shadow: 0 2px 10px rgba(59, 130, 246, 0.4);
+}
+
+/* Timer Card Styles */
+.timer-card {
+    background-color: var(--card-current);
+    border-radius: var(--radius-card);
+    padding: 40px 20px;
+    text-align: center;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    transition: var(--transition);
+    display: none; /* Se ocultan por defecto */
+}
+
+.timer-card.active-view { display: block; }
+
+.timer-display {
+    font-size: 7rem;
+    font-weight: 800;
+    line-height: 1;
+    margin: 20px 0;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -2px;
+}
+
+.timer-label {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    font-size: 1rem;
+    margin-bottom: 10px;
+    display: block;
+}
+
+/* Botón Principal */
+.main-btn {
+    background-color: var(--primary-color);
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 700;
+    padding: 18px 48px;
+    border-radius: 16px;
+    cursor: pointer;
+    box-shadow: 0 6px 0 rgb(29, 78, 216); /* Efecto 3D sutil */
+    transition: transform 0.1s, box-shadow 0.1s;
+    margin-top: 20px;
+    min-width: 200px;
+}
+
+.main-btn:active {
+    transform: translateY(6px);
+    box-shadow: none;
+}
+
+.secondary-btn {
+    color: var(--text-secondary);
+    font-size: 2rem;
+    margin-left: 20px;
+    vertical-align: middle;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.secondary-btn:hover { color: var(--text-current); }
+
+/* Motivational Phrase */
+.motivation-box {
+    margin-top: 30px;
+    min-height: 50px;
+    color: var(--text-secondary);
+    font-style: italic;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+/* Stats Section (Hidden by default) */
+#stats-section {
+    display: none;
+    background: var(--card-current);
+    border-radius: var(--radius-card);
+    padding: 30px;
+    margin-top: 20px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.stat-item {
+    background: rgba(0,0,0,0.2);
+    padding: 15px;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.stat-val { font-size: 1.8rem; font-weight: bold; display: block; }
+.stat-lbl { font-size: 0.85rem; color: var(--text-secondary); }
+
+/* Responsive */
+@media (max-width: 600px) {
+    .timer-display { font-size: 5.5rem; }
+    .main-btn { padding: 14px 32px; font-size: 1.2rem; }
+}

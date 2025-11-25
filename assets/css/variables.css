@@ -1,0 +1,33 @@
+:root {
+    /* Paleta extraída de app_theme.dart */
+    --primary-color: #3B82F6;
+    --bg-dark: #111827;
+    --card-dark: #1F2937;
+    --text-light: #F9FAFB;
+    --text-muted: #9CA3AF;
+    
+    /* Modo Claro (opcional para quick settings) */
+    --bg-light: #F9FAFB;
+    --card-light: #ECEEF1;
+    --text-dark: #1F2937;
+
+    /* Dimensiones y Efectos */
+    --radius-card: 20px;
+    --radius-btn: 8px;
+    --max-width: 620px; /* Estilo Pomofocus compacto */
+    --transition: all 0.3s ease;
+}
+
+body.dark-theme {
+    --bg-current: var(--bg-dark);
+    --card-current: var(--card-dark);
+    --text-current: var(--text-light);
+    --text-secondary: var(--text-muted);
+}
+
+body.light-theme {
+    --bg-current: var(--bg-light);
+    --card-current: var(--card-light);
+    --text-current: var(--text-dark);
+    --text-secondary: #4B5563;
+}

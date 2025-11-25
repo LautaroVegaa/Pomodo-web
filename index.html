@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomodō Web</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+</head>
+<body class="dark-theme">
+
+    <header>
+        <div class="logo">
+            <span>⚡</span> Pomodō
+        </div>
+        <div style="display: flex; gap: 10px;">
+            <button id="btn-stats" class="nav-btn">📊 Estadísticas</button>
+            <button id="btn-settings" class="nav-btn">⚙️</button>
+        </div>
+    </header>
+
+    <main>
+        <nav class="mode-tabs">
+            <button class="mode-btn active" data-mode="pomodoro">Pomodoro</button>
+            <button class="mode-btn" data-mode="timer">Timer</button>
+            <button class="mode-btn" data-mode="stopwatch">Cronómetro</button>
+        </nav>
+
+        <section id="view-pomodoro" class="timer-card active-view">
+            <span id="pomo-phase-label" class="timer-label">Enfoque • Ciclo 1</span>
+            <div id="pomo-time" class="timer-display">25:00</div>
+            
+            <div class="controls">
+                <button id="pomo-main-btn" class="main-btn">INICIAR</button>
+                <button id="pomo-skip-btn" class="secondary-btn" title="Saltar fase">⏭</button>
+            </div>
+
+            <div class="motivation-box">
+                <p id="pomo-phrase">"El foco es un músculo: si no lo usás, se atrofia."</p>
+            </div>
+        </section>
+
+        <section id="view-timer" class="timer-card">
+            <span class="timer-label">Temporizador Libre</span>
+            <div id="timer-time" class="timer-display">00:00</div>
+            
+            <input type="range" id="timer-slider" min="1" max="120" value="10" style="width: 80%; margin: 20px 0;">
+            <div style="color: var(--text-secondary); margin-bottom: 20px;">
+                <span id="slider-val">10</span> minutos
+            </div>
+
+            <button id="timer-main-btn" class="main-btn">INICIAR</button>
+        </section>
+
+        <section id="view-stopwatch" class="timer-card">
+            <span class="timer-label">Cronómetro</span>
+            <div id="stopwatch-time" class="timer-display">00:00</div>
+            
+            <button id="sw-main-btn" class="main-btn">INICIAR</button>
+            <button id="sw-reset-btn" class="secondary-btn" title="Reiniciar">↺</button>
+        </section>
+
+        <section id="stats-section">
+            <h2 style="margin-bottom: 15px;">Tus Números</h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span id="stat-sessions" class="stat-val">0</span>
+                    <span class="stat-lbl">Sesiones Hoy</span>
+                </div>
+                <div class="stat-item">
+                    <span id="stat-minutes" class="stat-val">0</span>
+                    <span class="stat-lbl">Minutos Hoy</span>
+                </div>
+                <div class="stat-item">
+                    <span id="stat-streak" class="stat-val">0</span>
+                    <span class="stat-lbl">Racha Días</span>
+                </div>
+                <div class="stat-item">
+                    <span id="stat-month" class="stat-val">0</span>
+                    <span class="stat-lbl">Minutos Mes</span>
+                </div>
+            </div>
+            <p style="margin-top: 15px; font-size: 0.8rem; color: gray;">
+                * Sincronizado con Supabase
+            </p>
+        </section>
+    </main>
+
+    <script type="module" src="../assets/js/main.js"></script>
+</body>
+</html>
