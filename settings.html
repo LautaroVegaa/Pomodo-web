@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Configuración — Pomodō</title>
+    
+    <link rel="stylesheet" href="assets/css/reset.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/settings.css">
+    
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+
+<body>
+
+    <header class="settings-header">
+        <a href="index.html" class="back-btn">
+            <i class="ph ph-caret-left"></i>
+        </a>
+        <h1>Configuración</h1>
+    </header>
+
+    <main class="settings-container">
+
+        <div class="profile-card-container">
+            <div class="profile-card">
+                <div class="profile-avatar-box" id="profile-avatar">LC</div>
+                <div class="profile-details">
+                    <div class="profile-name" id="profile-name">Cargando...</div>
+                    <div class="profile-role">Estudiante</div>
+                    <div class="profile-badges">
+                        <div class="badge badge-purple">
+                            <span id="profile-level">Nivel 1</span>
+                        </div>
+                        <div class="badge badge-blue">
+                            <span id="profile-sessions">0 sesiones</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="section-label">Configuración rápida</h3>
+
+        <div class="setting-card">
+            <div class="icon-box icon-blue">
+                <i class="ph ph-moon"></i>
+            </div>
+            <div class="setting-text">
+                <h4>Modo oscuro</h4>
+                <p>Tema visual de la aplicación</p>
+            </div>
+            <label class="switch">
+                <input type="checkbox" id="toggle-darkmode">
+                <span class="slider round"></span>
+            </label>
+        </div>
+
+        <div class="setting-card">
+            <div class="icon-box icon-purple">
+                <i class="ph ph-bell"></i>
+            </div>
+            <div class="setting-text">
+                <h4>Notificaciones</h4>
+                <p>Alertas al finalizar sesión</p>
+            </div>
+            <label class="switch">
+                <input type="checkbox" checked>
+                <span class="slider round"></span>
+            </label>
+        </div>
+
+        <div class="setting-card">
+            <div class="icon-box icon-green">
+                <i class="ph ph-speaker-high"></i>
+            </div>
+            <div class="setting-text">
+                <h4>Sonido</h4>
+                <p>Audio al completar pomodoro</p>
+            </div>
+            <label class="switch">
+                <input type="checkbox" checked>
+                <span class="slider round"></span>
+            </label>
+        </div>
+
+
+        <h3 class="section-label">Automatización</h3>
+
+        <div class="setting-card">
+            <div class="icon-box icon-orange">
+                <i class="ph ph-coffee"></i>
+            </div>
+            <div class="setting-text">
+                <h4>Descansos automáticos</h4>
+                <p>Inicia descansos sin confirmación</p>
+            </div>
+            <label class="switch">
+                <input type="checkbox">
+                <span class="slider round"></span>
+            </label>
+        </div>
+
+        <div class="setting-card">
+            <div class="icon-box icon-orange">
+                <i class="ph ph-play-circle"></i>
+            </div>
+            <div class="setting-text">
+                <h4>Pomodoros automáticos</h4>
+                <p>Continúa al siguiente pomodoro</p>
+            </div>
+            <label class="switch">
+                <input type="checkbox">
+                <span class="slider round"></span>
+            </label>
+        </div>
+
+        <div class="setting-card">
+            <div class="icon-box icon-gray">
+                <i class="ph ph-list-numbers"></i>
+            </div>
+            <div class="setting-text">
+                <h4>Intervalo de descanso largo</h4>
+                <p>Ciclos antes del descanso largo</p>
+            </div>
+            <input type="number" value="4" class="num-input">
+        </div>
+
+        <div class="setting-card">
+            <div class="icon-box icon-gray">
+                <i class="ph ph-clock"></i>
+            </div>
+            <div class="setting-text">
+                <h4>Duración descanso largo</h4>
+                <p>Tiempo en minutos</p>
+            </div>
+            <input type="number" value="15" class="num-input">
+        </div>
+
+
+        <div class="logout-container">
+            <button id="btn-logout-settings" class="btn-logout-wide">
+                Cerrar sesión
+            </button>
+        </div>
+
+    </main>
+
+    <div id="modal-logout-confirm" class="auth-modal-hidden">
+        <div class="auth-backdrop"></div>
+        <div class="auth-card" style="max-width: 360px; border: 1px solid rgba(255,255,255,0.05);">
+            <h2 class="auth-title" style="margin-bottom: 10px;">Cerrar sesión</h2>
+            <p class="auth-subtitle" style="margin-bottom: 25px;">¿Estás seguro de que quieres salir?</p>
+            
+            <div style="display: flex; gap: 12px;">
+                <button id="btn-cancel-logout" class="auth-btn" style="background: rgba(255,255,255,0.08); color: #ccc;">
+                    Cancelar
+                </button>
+                <button id="btn-confirm-logout" class="auth-btn" style="background: #ef4444; color: white;">
+                    Salir
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="assets/js/settings.js"></script>
+
+</body>
+</html>

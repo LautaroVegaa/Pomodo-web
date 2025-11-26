@@ -13,15 +13,15 @@
     <div class="logo">Pomodō<span>.</span></div>
 
     <div class="nav-right">
-        <button class="top-btn active">⏱ Focus</button>
+        <button class="top-btn" id="btn-tasks">📝 Tareas</button>
+        <button class="top-btn" id="btn-login">👤 Login</button>
         <button class="top-btn" onclick="location.href='stats.html'">📊 Stats</button>
-        <button class="top-btn">⚙️</button>
+        <button class="top-btn" onclick="location.href='settings.html'">⚙️</button>
     </div>
 </header>
 
 <div class="top-divider"></div>
 
-<!-- Tabs -->
 <div class="tabs">
     <button class="tab active">⭗ Pomodoro</button>
     <button class="tab">⏱ Timer</button>
@@ -30,21 +30,15 @@
 
 <div class="bottom-divider"></div>
 
-<!-- MAIN CONTENT -->
 <main class="main-container">
 
-    <!-- ===================== POMODORO VIEW ===================== -->
     <div id="view-pomodoro" class="view active-view">
-
         <div class="timer-card">
             <div class="pill">Enfoque - Ciclo 1</div>
-
             <div class="timer-text" id="pomodoro-time">25:00</div>
-
             <div class="progress-bar">
                 <div class="progress"></div>
             </div>
-
             <div class="actions">
                 <button class="circle-btn">▶</button>
                 <button class="circle-btn">↺</button>
@@ -52,14 +46,12 @@
         </div>
 
         <div class="qs-title">⚙️ Quick Settings</div>
-
         <div class="qs-grid">
             <div class="qs-box">
                 <div class="qs-number">25</div>
                 <div class="qs-min">min</div>
                 <div class="qs-desc">Focus Time</div>
             </div>
-
             <div class="qs-box active">
                 <div class="qs-number">5</div>
                 <div class="qs-min">min</div>
@@ -67,168 +59,155 @@
             </div>
         </div>
 
-        <!-- === DAILY CARD (Pomodoro) === -->
         <div class="daily-card">
-            <div class="daily-card-title">
-                <i>📊</i> Estadísticas de hoy
-            </div>
-
+            <div class="daily-card-title"><i>📊</i> Estadísticas de hoy</div>
             <div class="daily-stats-row">
                 <div class="daily-item">
                     <div id="daily-cycles" class="daily-item-value">0</div>
                     <div class="daily-item-label">Ciclos</div>
                 </div>
-
                 <div class="daily-item">
                     <div id="daily-minutes" class="daily-item-value-center">0h 0m</div>
                     <div class="daily-item-label">Estudiado</div>
                 </div>
-
                 <div class="daily-item">
                     <div id="daily-streak" class="daily-item-value">0</div>
                     <div class="daily-item-label">Racha</div>
                 </div>
             </div>
         </div>
-
     </div>
 
-
-    <!-- ===================== TIMER VIEW ===================== -->
     <div id="view-timer" class="view">
-
         <div class="timer-card">
             <div class="pill">Timer</div>
-
             <div class="timer-text" id="timer-time">25:00</div>
-
             <div class="progress-bar">
                 <div class="progress"></div>
             </div>
-
             <div class="actions">
                 <button class="circle-btn">▶</button>
                 <button class="circle-btn">↺</button>
             </div>
         </div>
-
-        <!-- === SLIDER DEL TIMER === -->
         <div class="timer-slider-container">
             <label class="slider-label">Adjust Duration</label>
-
             <div class="slider-value-display" id="timer-slider-value">25:00</div>
-
-            <input 
-                type="range" 
-                id="timer-slider" 
-                min="1" 
-                max="600" 
-                value="25"
-                class="timer-slider"
-            >
+            <input type="range" id="timer-slider" min="1" max="600" value="25" class="timer-slider">
         </div>
-
-        <!-- === DAILY CARD (Timer) === -->
         <div class="daily-card">
-            <div class="daily-card-title">
-                <i>📊</i> Estadísticas de hoy
-            </div>
-
+            <div class="daily-card-title"><i>📊</i> Estadísticas de hoy</div>
             <div class="daily-stats-row">
-
-                <div class="daily-item">
-                    <div id="daily-cycles" class="daily-item-value">0</div>
-                    <div class="daily-item-label">Ciclos</div>
-                </div>
-
-                <div class="daily-item">
-                    <div id="daily-minutes" class="daily-item-value-center">0h 0m</div>
-                    <div class="daily-item-label">Estudiado</div>
-                </div>
-
-                <div class="daily-item">
-                    <div id="daily-streak" class="daily-item-value">0</div>
-                    <div class="daily-item-label">Racha</div>
-                </div>
-
+                <div class="daily-item"><div id="daily-cycles" class="daily-item-value">0</div><div class="daily-item-label">Ciclos</div></div>
+                <div class="daily-item"><div id="daily-minutes" class="daily-item-value-center">0h 0m</div><div class="daily-item-label">Estudiado</div></div>
+                <div class="daily-item"><div id="daily-streak" class="daily-item-value">0</div><div class="daily-item-label">Racha</div></div>
             </div>
         </div>
-
     </div>
 
-
-    <!-- ===================== STOPWATCH VIEW ===================== -->
     <div id="view-stopwatch" class="view">
-
         <div class="timer-card">
             <div class="pill">Stopwatch</div>
-
             <div class="timer-text" id="stopwatch-time">00:00</div>
-
             <div class="progress-bar">
                 <div class="progress" style="width: 0%;"></div>
             </div>
-
             <div class="actions">
                 <button class="circle-btn">▶</button>
                 <button class="circle-btn">↺</button>
             </div>
         </div>
-
-        <!-- === DAILY CARD (Stopwatch) === -->
         <div class="daily-card">
-            <div class="daily-card-title">
-                <i>📊</i> Estadísticas de hoy
-            </div>
-
+            <div class="daily-card-title"><i>📊</i> Estadísticas de hoy</div>
             <div class="daily-stats-row">
-
-                <div class="daily-item">
-                    <div id="daily-cycles" class="daily-item-value">0</div>
-                    <div class="daily-item-label">Ciclos</div>
-                </div>
-
-                <div class="daily-item">
-                    <div id="daily-minutes" class="daily-item-value-center">0h 0m</div>
-                    <div class="daily-item-label">Estudiado</div>
-                </div>
-
-                <div class="daily-item">
-                    <div id="daily-streak" class="daily-item-value">0</div>
-                    <div class="daily-item-label">Racha</div>
-                </div>
-
+                <div class="daily-item"><div id="daily-cycles" class="daily-item-value">0</div><div class="daily-item-label">Ciclos</div></div>
+                <div class="daily-item"><div id="daily-minutes" class="daily-item-value-center">0h 0m</div><div class="daily-item-label">Estudiado</div></div>
+                <div class="daily-item"><div id="daily-streak" class="daily-item-value">0</div><div class="daily-item-label">Racha</div></div>
             </div>
         </div>
-
     </div>
 
 </main>
 
-<!-- ===================== MODAL QUICK SETTINGS ===================== -->
 <div id="qs-modal" class="qs-modal-hidden">
-
     <div class="qs-modal-backdrop"></div>
-
     <div class="qs-modal">
-
         <div class="qs-modal-title" id="qs-modal-title">Adjust Time</div>
-
         <div class="qs-modal-value" id="qs-modal-value">25 min</div>
-
-        <input 
-            type="range" 
-            id="qs-modal-slider"
-            min="1"
-            max="60"
-            value="25"
-            class="qs-modal-slider"
-        >
-
+        <input type="range" id="qs-modal-slider" min="1" max="60" value="25" class="qs-modal-slider">
         <button class="qs-modal-save" id="qs-modal-save">Save</button>
-
     </div>
+</div>
 
+<div id="modal-login" class="auth-modal-hidden">
+    <div class="auth-backdrop"></div>
+    <div class="auth-card">
+        <h2 class="auth-title">Iniciar Sesión</h2>
+        <p class="auth-subtitle">Accede a tu cuenta de Pomodō</p>
+        <form id="form-login">
+            <div class="input-group"><span class="input-icon">✉️</span><input type="email" id="login-email" placeholder="Email" required /></div>
+            <div class="input-group"><span class="input-icon">🔒</span><input type="password" id="login-password" placeholder="Contraseña" required /></div>
+            <button type="submit" class="auth-btn">Iniciar Sesión</button>
+        </form>
+        <div class="auth-footer">¿No tienes cuenta? <span id="link-to-register">Regístrate</span></div>
+    </div>
+</div>
+
+<div id="modal-register" class="auth-modal-hidden">
+    <div class="auth-backdrop"></div>
+    <div class="auth-card">
+        <h2 class="auth-title">Crear Cuenta</h2>
+        <p class="auth-subtitle">Únete a Pomodō</p>
+        <form id="form-register">
+            <div class="input-group"><span class="input-icon">👤</span><input type="text" id="reg-name" placeholder="Nombre" required /></div>
+            <div class="input-group"><span class="input-icon">✉️</span><input type="email" id="reg-email" placeholder="Email" required /></div>
+            <div class="input-group"><span class="input-icon">🔒</span><input type="password" id="reg-password" placeholder="Contraseña" required /></div>
+            <div class="input-group"><span class="input-icon">🔒</span><input type="password" id="reg-password-confirm" placeholder="Confirmar Contraseña" required /></div>
+            <button type="submit" class="auth-btn">Crear Cuenta</button>
+        </form>
+        <div class="auth-footer">¿Ya tienes cuenta? <span id="link-to-login">Inicia sesión</span></div>
+    </div>
+</div>
+
+<div id="modal-alert" class="auth-modal-hidden">
+    <div class="auth-backdrop"></div>
+    <div class="auth-card" style="max-width: 320px;">
+        <h2 class="auth-title" id="alert-title">Mensaje</h2>
+        <p class="auth-subtitle" id="alert-message" style="margin-bottom: 24px; color: #c1c9d6;">...</p>
+        <button id="btn-alert-ok" class="auth-btn">Aceptar</button>
+    </div>
+</div>
+
+<div id="modal-profile" class="auth-modal-hidden">
+    <div class="auth-backdrop"></div>
+    <div class="auth-card">
+        <button id="close-profile" style="position:absolute; top:15px; right:15px; color:#fff; font-size:20px;">&times;</button>
+        <div class="profile-content">
+            <div class="profile-avatar" id="profile-avatar-text">U</div>
+            <h2 class="auth-title" id="profile-name">Cargando...</h2>
+            <p class="auth-subtitle" id="profile-email">...</p>
+            <div class="profile-badge">
+                <span>🚀 Usuario PRO</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modal-tasks" class="auth-modal-hidden">
+    <div class="auth-backdrop"></div>
+    <div class="auth-card" style="max-width: 450px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+            <h2 class="auth-title" style="margin:0;">Mis Tareas</h2>
+            <button id="close-tasks" style="color:#fff; font-size:24px;">&times;</button>
+        </div>
+        <form id="form-add-task" style="display:flex; gap:10px; margin-bottom:20px;">
+            <input type="text" id="input-task" placeholder="¿En qué vas a trabajar?" class="task-input" required autocomplete="off">
+            <button type="submit" class="btn-add-task">+</button>
+        </form>
+        <div id="tasks-list" class="tasks-container-scroll">
+            <div class="empty-state">No hay tareas pendientes</div>
+        </div>
+    </div>
 </div>
 
 <script type="module" src="assets/js/main.js"></script>

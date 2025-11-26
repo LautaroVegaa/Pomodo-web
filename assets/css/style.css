@@ -95,18 +95,16 @@ body {
 /* CARD EXACTA SEGÚN TU CAPTURA */
 .timer-card {
     width: 100%;
-    max-width: 620px;          /* ancho real aproximado de la card */
-    height: 340px;             /* altura exacta del screenshot */
-    background: #151f2f;       /* tono exacto de la imagen */
-    border-radius: 34px;       /* esquinas más redondeadas */
+    max-width: 620px;
+    height: 340px;
+    background: #151f2f;
+    border-radius: 34px;
     margin: 0 auto;
-    padding: 48px 50px 40px 50px;  /* spacing real */
+    padding: 48px 50px 40px 50px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-
-    /* sombra suave igual a la captura */
     box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
 }
 
@@ -141,7 +139,7 @@ body {
 
 .progress {
     height: 100%;
-    width: 88%;                
+    width: 88%;
     background: #3a82f7;
     border-radius: 4px;
 }
@@ -150,7 +148,7 @@ body {
 .actions {
     display: flex;
     justify-content: center;
-    gap: 56px;                  /* botones más separados */
+    gap: 56px;
 }
 
 /* Botón circular EXACTO */
@@ -162,11 +160,9 @@ body {
     color: white;
     background: rgba(255,255,255,0.04);
     border: 2px solid rgba(255,255,255,0.06);
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     transition: 0.2s;
 }
 
@@ -220,7 +216,7 @@ body {
 
 
 /* ===================================== */
-/*         NUEVO: OCULTAR VISTAS         */
+/* NUEVO: OCULTAR VISTAS         */
 /* ===================================== */
 
 .view {
@@ -232,7 +228,7 @@ body {
 }
 
 /* ============================== */
-/*        SLIDER TIMER            */
+/* SLIDER TIMER            */
 /* ============================== */
 
 .timer-slider-container {
@@ -281,7 +277,7 @@ body {
 }
 
 /* =============================== */
-/*        QUICK SETTINGS MODAL     */
+/* QUICK SETTINGS MODAL     */
 /* =============================== */
 
 .qs-modal-hidden {
@@ -350,13 +346,13 @@ body {
 
 
 /* ====================================== */
-/*     DAILY STATS CARD (ESTILO EXACTO)   */
+/* DAILY STATS CARD (ESTILO EXACTO)   */
 /* ====================================== */
 
 .daily-card {
     width: 100%;
     max-width: 620px;
-    background: #111b2a; /* idéntico al color del ejemplo */
+    background: #111b2a;
     border-radius: 18px;
     padding: 18px 22px;
     margin: 32px auto 0 auto;
@@ -402,7 +398,7 @@ body {
 .daily-item-value-center {
     font-size: 26px;
     font-weight: 700;
-    color: #4de0a6; /* verde agua exacto del ejemplo */
+    color: #4de0a6;
 }
 
 /* Etiquetas debajo */
@@ -413,3 +409,242 @@ body {
     font-weight: 400;
 }
 
+/* ===========================
+   AUTH MODALS (Login / Register)
+=========================== */
+
+.auth-modal-hidden {
+    display: none;
+}
+
+/* Fondo oscuro borroso */
+.auth-backdrop {
+    position: fixed;
+    top: 0; 
+    left: 0;
+    width: 100%; 
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
+    z-index: 3000;
+}
+
+/* Tarjeta del formulario */
+.auth-card {
+    position: fixed;
+    top: 50%; 
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    max-width: 400px;
+    background: #151f2f;
+    padding: 40px 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    z-index: 3001;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+/* Textos */
+.auth-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 8px;
+}
+
+.auth-subtitle {
+    font-size: 14px;
+    color: #8897ad;
+    margin-bottom: 30px;
+}
+
+/* Inputs con Iconos */
+.input-group {
+    position: relative;
+    margin-bottom: 16px;
+}
+
+.input-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.input-group input {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 14px 14px 14px 45px;
+    color: #ffffff;
+    font-size: 15px;
+    outline: none;
+    transition: 0.3s;
+}
+
+.input-group input:focus {
+    border-color: #3a82f7;
+    background: rgba(58, 130, 247, 0.05);
+}
+
+/* Botón Principal */
+.auth-btn {
+    width: 100%;
+    background: #3a82f7;
+    color: white;
+    font-weight: 600;
+    padding: 14px;
+    border-radius: 12px;
+    margin-top: 10px;
+    font-size: 16px;
+    transition: 0.2s;
+    border: none;
+}
+
+.auth-btn:hover {
+    background: #2b6cdb;
+}
+
+/* Footer Links */
+.auth-footer {
+    margin-top: 25px;
+    font-size: 14px;
+    color: #8897ad;
+}
+
+.auth-footer span {
+    color: #3a82f7;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.auth-footer span:hover {
+    text-decoration: underline;
+}
+
+/* =================================================================
+   TASKS MODAL (NUEVO)
+================================================================= */
+
+/* Input de tarea */
+.task-input {
+    flex: 1;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: white;
+    padding: 12px 16px;
+    border-radius: 12px;
+    outline: none;
+    font-size: 15px;
+}
+.task-input:focus {
+    border-color: #3a82f7;
+    background: rgba(58, 130, 247, 0.05);
+}
+
+/* Botón de agregar (+) */
+.btn-add-task {
+    background: #3a82f7;
+    color: white;
+    width: 46px;
+    border-radius: 12px;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.btn-add-task:hover {
+    background: #2b6cdb;
+}
+
+/* Contenedor con Scroll */
+.tasks-container-scroll {
+    max-height: 300px;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+/* Scrollbar personalizada */
+.tasks-container-scroll::-webkit-scrollbar {
+    width: 6px;
+}
+.tasks-container-scroll::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.1);
+    border-radius: 4px;
+}
+
+/* Item de Tarea individual */
+.task-item {
+    display: flex;
+    align-items: center;
+    background: rgba(255,255,255,0.03);
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    border: 1px solid rgba(255,255,255,0.05);
+    transition: 0.2s;
+}
+
+.task-item:hover {
+    background: rgba(255,255,255,0.06);
+}
+
+.task-item.completed {
+    opacity: 0.5;
+    text-decoration: line-through;
+}
+
+.task-text {
+    flex: 1;
+    margin-left: 12px;
+    font-size: 15px;
+    color: #e5e7eb;
+}
+
+/* Checkbox circular custom */
+.task-check {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #555;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s;
+}
+
+.task-check.checked {
+    background: #2ecc71;
+    border-color: #2ecc71;
+}
+
+/* Botón borrar */
+.btn-delete-task {
+    color: #ef4444;
+    font-size: 18px;
+    padding: 5px;
+    opacity: 0.6;
+    transition: 0.2s;
+}
+.btn-delete-task:hover {
+    opacity: 1;
+    background: rgba(239, 68, 68, 0.1);
+    border-radius: 6px;
+}
+
+.empty-state {
+    text-align: center;
+    color: #6b7280;
+    font-size: 14px;
+    margin-top: 20px;
+    font-style: italic;
+}
