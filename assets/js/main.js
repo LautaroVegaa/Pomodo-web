@@ -4,6 +4,7 @@
 import { PomodoroTimer } from './pomodoro.js';
 import { TimerMode } from './timer.js';
 import { Stopwatch } from './stopwatch.js';
+import { saveSession } from './saveSession.js';
 
 
 // ===========================
@@ -53,11 +54,10 @@ const qsModalValue = document.getElementById("qs-modal-value");
 const qsModalSlider = document.getElementById("qs-modal-slider");
 const qsModalSave = document.getElementById("qs-modal-save");
 
-// Botones Quick Settings
 const qsFocusBox = document.querySelector(".qs-box:nth-child(1)");
 const qsBreakBox = document.querySelector(".qs-box:nth-child(2)");
 
-let qsMode = "focus"; // 'focus' o 'break'
+let qsMode = "focus";
 
 
 // ==========================
@@ -126,35 +126,63 @@ let currentMode = "pomodoro";
 // INSTANCIAS
 // ===========================
 
-// Pomodoro
-const pomodoro = new PomodoroTimer((time, isRunning, phaseLabel) => {
-    if (currentMode !== "pomodoro") return;
+// POMODORO
+const pomodoro = new PomodoroTimer(
+    (time, isRunning, phaseLabel, finishedPhase) => {
+        if (currentMode !== "pomodoro") return;
 
-    displayPomodoro.textContent = time;
+        displayPomodoro.textContent = time;
 
-    const pill = viewPomodoro.querySelector(".pill");
-    pill.textContent = phaseLabel;
+        const pill = viewPomodoro.querySelector(".pill");
+        pill.textContent = phaseLabel;
 
-    updatePlayButton(pomoPlayBtn, isRunning);
-});
+        updatePlayButton(pomoPlayBtn, isRunning);
+        // finishedPhase lo podríamos usar más adelante si querés animaciones, etc.
+    },
 
-// Timer
-const customTimer = new TimerMode((time, isRunning) => {
+    // 🔥 Callback para guardar minutos reales de ENFOQUE
+    (minutesStudied) => {
+        if (!minutesStudied || minutesStudied <= 0) return;
+        saveSession({
+            duration: minutesStudied,
+            type: "focus"
+        });
+    }
+);
+
+// TIMER
+const customTimer = new TimerMode((time, isRunning, completedMinutes = null) => {
     if (currentMode !== "timer") return;
 
     displayTimer.textContent = time;
     timerSliderValue.textContent = time;
 
     updatePlayButton(timerPlayBtn, isRunning);
+
+    // 💾 Guardar solo cuando Timer avisa que se completó
+    if (typeof completedMinutes === "number" && completedMinutes > 0) {
+        saveSession({
+            duration: completedMinutes,
+            type: "timer"
+        });
+    }
 });
 
-// Stopwatch
-const stopwatch = new Stopwatch((time, isRunning) => {
+// STOPWATCH
+const stopwatch = new Stopwatch((time, isRunning, completedMinutes = null) => {
     if (currentMode !== "stopwatch") return;
 
     displayStopwatch.textContent = time;
 
     updatePlayButton(swPlayBtn, isRunning);
+
+    // 💾 Guardar al pausar, si hay minutos suficientes
+    if (typeof completedMinutes === "number" && completedMinutes > 0) {
+        saveSession({
+            duration: completedMinutes,
+            type: "stopwatch"
+        });
+    }
 });
 
 
@@ -172,7 +200,6 @@ function activateView(mode) {
     customTimer.pause();
     stopwatch.pause();
 
-    // 🔥 Reset de botones al cambiar vista
     updatePlayButton(pomoPlayBtn, false);
     updatePlayButton(timerPlayBtn, false);
     updatePlayButton(swPlayBtn, false);
@@ -183,6 +210,7 @@ function activateView(mode) {
     } 
     else if (mode === "timer") {
         viewTimer.classList.add("active-view");
+
         timerSlider.value = customTimer.totalSeconds / 60;
         timerSliderValue.textContent = customTimer.formatTime();
         displayTimer.textContent = customTimer.formatTime();
@@ -233,7 +261,7 @@ swResetBtn.addEventListener('click', () => stopwatch.reset());
 
 
 // ===========================
-// SLIDER DEL TIMER (1–600 min)
+// SLIDER DEL TIMER
 // ===========================
 timerSlider.addEventListener("input", () => {
     const minutes = Number(timerSlider.value);

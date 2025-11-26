@@ -14,7 +14,7 @@
 
     <div class="nav-right">
         <button class="top-btn active">⏱ Focus</button>
-        <button class="top-btn">📊 Stats</button>
+        <button class="top-btn" onclick="location.href='stats.html'">📊 Stats</button>
         <button class="top-btn">⚙️</button>
     </div>
 </header>
@@ -67,6 +67,30 @@
             </div>
         </div>
 
+        <!-- === DAILY CARD (Pomodoro) === -->
+        <div class="daily-card">
+            <div class="daily-card-title">
+                <i>📊</i> Estadísticas de hoy
+            </div>
+
+            <div class="daily-stats-row">
+                <div class="daily-item">
+                    <div id="daily-cycles" class="daily-item-value">0</div>
+                    <div class="daily-item-label">Ciclos</div>
+                </div>
+
+                <div class="daily-item">
+                    <div id="daily-minutes" class="daily-item-value-center">0h 0m</div>
+                    <div class="daily-item-label">Estudiado</div>
+                </div>
+
+                <div class="daily-item">
+                    <div id="daily-streak" class="daily-item-value">0</div>
+                    <div class="daily-item-label">Racha</div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
 
@@ -104,6 +128,32 @@
             >
         </div>
 
+        <!-- === DAILY CARD (Timer) === -->
+        <div class="daily-card">
+            <div class="daily-card-title">
+                <i>📊</i> Estadísticas de hoy
+            </div>
+
+            <div class="daily-stats-row">
+
+                <div class="daily-item">
+                    <div id="daily-cycles" class="daily-item-value">0</div>
+                    <div class="daily-item-label">Ciclos</div>
+                </div>
+
+                <div class="daily-item">
+                    <div id="daily-minutes" class="daily-item-value-center">0h 0m</div>
+                    <div class="daily-item-label">Estudiado</div>
+                </div>
+
+                <div class="daily-item">
+                    <div id="daily-streak" class="daily-item-value">0</div>
+                    <div class="daily-item-label">Racha</div>
+                </div>
+
+            </div>
+        </div>
+
     </div>
 
 
@@ -122,6 +172,32 @@
             <div class="actions">
                 <button class="circle-btn">▶</button>
                 <button class="circle-btn">↺</button>
+            </div>
+        </div>
+
+        <!-- === DAILY CARD (Stopwatch) === -->
+        <div class="daily-card">
+            <div class="daily-card-title">
+                <i>📊</i> Estadísticas de hoy
+            </div>
+
+            <div class="daily-stats-row">
+
+                <div class="daily-item">
+                    <div id="daily-cycles" class="daily-item-value">0</div>
+                    <div class="daily-item-label">Ciclos</div>
+                </div>
+
+                <div class="daily-item">
+                    <div id="daily-minutes" class="daily-item-value-center">0h 0m</div>
+                    <div class="daily-item-label">Estudiado</div>
+                </div>
+
+                <div class="daily-item">
+                    <div id="daily-streak" class="daily-item-value">0</div>
+                    <div class="daily-item-label">Racha</div>
+                </div>
+
             </div>
         </div>
 
@@ -154,7 +230,6 @@
     </div>
 
 </div>
-
 
 <script type="module" src="assets/js/main.js"></script>
 

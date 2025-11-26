@@ -1,0 +1,180 @@
+/* ===========================
+   BASE
+=========================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Inter", sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #0d1a2b, #091426);
+    color: #ffffff;
+    padding: 20px 0 80px 0;
+}
+
+
+/* ===========================
+   HEADER
+=========================== */
+
+.stats-header {
+    width: 100%;
+    max-width: 1180px;
+    margin: 0 auto 20px auto;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    font-size: 30px;
+    font-weight: 700;
+    cursor: pointer;
+}
+.logo span {
+    color: #3a82f7;
+}
+
+
+/* ===========================
+   MAIN CONTAINER
+=========================== */
+
+.stats-container {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.stats-title {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 25px;
+}
+
+
+/* ===========================
+   WEEKLY GRAPH CARD
+=========================== */
+
+.weekly-progress {
+    background: #151f2f;
+    padding: 26px;
+    border-radius: 20px;
+    box-shadow: 0 8px 22px rgba(0,0,0,0.35);
+    margin-bottom: 30px;
+}
+
+.weekly-progress h2 {
+    margin-bottom: 6px;
+    font-size: 20px;
+}
+
+.weekly-progress p {
+    opacity: 0.85;
+    font-size: 14px;
+}
+
+.weekly-bars {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    height: 130px;
+}
+
+.bar-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.bar {
+    width: 14px;
+    border-radius: 6px;
+    background: #3a82f7;
+    height: 10px;
+    transition: 0.25s;
+}
+
+.bar-item span {
+    margin-top: 6px;
+    font-size: 12px;
+    opacity: 0.85;
+}
+
+
+/* ===========================
+   SUMMARY CARDS (OPCIÓN A)
+=========================== */
+
+.stats-box {
+    background: #151f2f;
+    padding: 26px 28px;
+    border-radius: 20px;
+    box-shadow: 0 8px 22px rgba(0,0,0,0.35);
+    margin-bottom: 24px;
+}
+
+.stats-box h3 {
+    font-size: 17px;
+    margin-bottom: 18px;
+    font-weight: 600;
+}
+
+
+/* Layout: fila (número + texto a la derecha) */
+.stats-row {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+/* Cada item es una fila horizontal */
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.stat-number.blue {
+    font-size: 30px;
+    font-weight: 700;
+    color: #3a82f7;
+}
+
+.stat-number.green {
+    font-size: 28px;
+    font-weight: 700;
+    color: #2ecc71;
+}
+
+.stat-label {
+    font-size: 15px;
+    opacity: 0.85;
+}
+
+
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+
+@media (max-width: 550px) {
+
+    /* Mantiene layout vertical SIEMPRE */
+    .stat-number {
+        font-size: 24px;
+    }
+
+    .stats-box {
+        padding: 20px;
+    }
+
+    .weekly-bars {
+        gap: 4px;
+    }
+}

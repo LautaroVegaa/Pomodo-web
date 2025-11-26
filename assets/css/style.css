@@ -349,3 +349,67 @@ body {
 }
 
 
+/* ====================================== */
+/*     DAILY STATS CARD (ESTILO EXACTO)   */
+/* ====================================== */
+
+.daily-card {
+    width: 100%;
+    max-width: 620px;
+    background: #111b2a; /* idéntico al color del ejemplo */
+    border-radius: 18px;
+    padding: 18px 22px;
+    margin: 32px auto 0 auto;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.28);
+}
+
+/* Título */
+.daily-card-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #c8d4e6;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 18px;
+}
+
+.daily-card-title i {
+    font-style: normal;
+    color: #7fa6ff;
+}
+
+/* Contenedor horizontal */
+.daily-stats-row {
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+}
+
+/* Cada columna */
+.daily-item {
+    flex: 1;
+}
+
+/* Números azules — Ciclos y Racha */
+.daily-item-value {
+    font-size: 26px;
+    font-weight: 700;
+    color: #4da0ff;
+}
+
+/* Valor central — Minutos (verde agua) */
+.daily-item-value-center {
+    font-size: 26px;
+    font-weight: 700;
+    color: #4de0a6; /* verde agua exacto del ejemplo */
+}
+
+/* Etiquetas debajo */
+.daily-item-label {
+    margin-top: 3px;
+    font-size: 13px;
+    color: #8897ad;
+    font-weight: 400;
+}
+

@@ -15,14 +15,12 @@ export class Stopwatch {
     start() {
         this.isRunning = true;
 
-        // 🔥 ahora enviamos isRunning = true
-        this.updateUI(this.formatTime(), true);
+        // completedMinutes = null
+        this.updateUI(this.formatTime(), true, null);
 
         this.timer = setInterval(() => {
             this.seconds++;
-            
-            // 🔥 mantener UI actualizada en modo running
-            this.updateUI(this.formatTime(), true);
+            this.updateUI(this.formatTime(), true, null);
         }, 1000);
     }
 
@@ -30,16 +28,17 @@ export class Stopwatch {
         this.isRunning = false;
         clearInterval(this.timer);
 
-        // 🔥 isRunning = false
-        this.updateUI(this.formatTime(), false);
+        const minutes = Math.floor(this.seconds / 60);
+
+        // completedMinutes = minutos acumulados
+        this.updateUI(this.formatTime(), false, minutes);
     }
 
     reset() {
         this.pause();
         this.seconds = 0;
 
-        // 🔥 isRunning = false
-        this.updateUI(this.formatTime(), false);
+        this.updateUI(this.formatTime(), false, null);
     }
 
     formatTime() {

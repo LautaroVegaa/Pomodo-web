@@ -10,9 +10,9 @@ export class TimerMode {
     setDuration(minutes) {
         this.pause();
         this.totalSeconds = minutes * 60;
-        
-        // 🔥 enviar isRunning = false
-        this.updateUI(this.formatTime(), false);
+
+        // enviar completed = null
+        this.updateUI(this.formatTime(), false, null);
     }
 
     startStop() {
@@ -25,15 +25,15 @@ export class TimerMode {
 
         this.isRunning = true;
 
-        // 🔥 ahora enviamos isRunning = true
-        this.updateUI(this.formatTime(), true);
+        // running + completed = null
+        this.updateUI(this.formatTime(), true, null);
 
         this.interval = setInterval(() => {
             if (this.totalSeconds > 0) {
                 this.totalSeconds--;
-                
-                // 🔥 mantener UI en modo "running"
-                this.updateUI(this.formatTime(), true);
+
+                // mantener UI en "running"
+                this.updateUI(this.formatTime(), true, null);
 
             } else {
                 this.complete();
@@ -45,26 +45,32 @@ export class TimerMode {
         this.isRunning = false;
         clearInterval(this.interval);
 
-        // 🔥 enviar isRunning = false
-        this.updateUI(this.formatTime(), false);
+        // pausa normal → completed = null
+        this.updateUI(this.formatTime(), false, null);
     }
 
     reset() {
         this.pause();
         this.totalSeconds = 25 * 60;
 
-        // 🔥 enviar isRunning = false
-        this.updateUI(this.formatTime(), false);
+        this.updateUI(this.formatTime(), false, null);
     }
 
     complete() {
         this.pause();
-        alert("¡Tiempo finalizado!");
+
+        // completed = true → main.js guarda sesión
+        this.updateUI(this.formatTime(), false, true);
     }
 
     formatTime() {
         const m = Math.floor(this.totalSeconds / 60).toString().padStart(2, '0');
         const s = (this.totalSeconds % 60).toString().padStart(2, '0');
         return `${m}:${s}`;
+    }
+
+    // minutos totales usados para estadísticas
+    get totalMinutes() {
+        return Math.floor((25 * 60 - this.totalSeconds) / 60);
     }
 }

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pomodō — Stats</title>
+
+    <link rel="stylesheet" href="assets/css/reset.css">
+    <link rel="stylesheet" href="assets/css/stats.css">
+</head>
+
+<body>
+
+<header class="stats-header">
+    <div class="logo" onclick="location.href='index.html'">Pomodō<span>.</span></div>
+</header>
+
+<main class="stats-container">
+
+    <!-- Título principal -->
+    <h1 class="stats-title">Más Estadísticas</h1>
+
+    <!-- ============================================================
+         PROGRESO SEMANAL (NO MODIFICADO)
+    ============================================================ -->
+    <section class="card weekly-progress">
+
+        <h2>Progreso de Concentración Semanal</h2>
+        <p id="best-day-text">Tu mejor día fue el lunes (0 min).</p>
+        <p id="weekly-average-text">Promedio semanal: 0 min.</p>
+
+        <div class="weekly-bars">
+            <div class="bar-item">
+                <div class="bar" id="bar-mon"></div>
+                <span>Lun</span>
+            </div>
+            <div class="bar-item">
+                <div class="bar" id="bar-tue"></div>
+                <span>Mar</span>
+            </div>
+            <div class="bar-item">
+                <div class="bar" id="bar-wed"></div>
+                <span>Mié</span>
+            </div>
+            <div class="bar-item">
+                <div class="bar" id="bar-thu"></div>
+                <span>Jue</span>
+            </div>
+            <div class="bar-item">
+                <div class="bar" id="bar-fri"></div>
+                <span>Vie</span>
+            </div>
+            <div class="bar-item">
+                <div class="bar" id="bar-sat"></div>
+                <span>Sáb</span>
+            </div>
+            <div class="bar-item">
+                <div class="bar" id="bar-sun"></div>
+                <span>Dom</span>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- ============================================================
+         HOY
+    ============================================================ -->
+    <section class="stats-box">
+        <h3>Hoy</h3>
+
+        <div class="stats-row">
+            <div class="stat-item">
+                <span id="today-sessions" class="stat-number blue">0</span>
+                <span class="stat-label">Sesiones</span>
+            </div>
+
+            <div class="stat-item">
+                <span id="today-minutes" class="stat-number green">0</span>
+                <span class="stat-label">Minutos</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         ESTA SEMANA
+    ============================================================ -->
+    <section class="stats-box">
+        <h3>Esta semana</h3>
+
+        <div class="stats-row">
+            <div class="stat-item">
+                <span id="week-sessions" class="stat-number blue">0</span>
+                <span class="stat-label">Sesiones</span>
+            </div>
+
+            <div class="stat-item">
+                <span id="week-minutes" class="stat-number green">0</span>
+                <span class="stat-label">Minutos</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         ESTE MES
+    ============================================================ -->
+    <section class="stats-box">
+        <h3>Este mes</h3>
+
+        <div class="stats-row">
+            <div class="stat-item">
+                <span id="month-sessions" class="stat-number blue">0</span>
+                <span class="stat-label">Sesiones</span>
+            </div>
+
+            <div class="stat-item">
+                <span id="month-minutes" class="stat-number green">0</span>
+                <span class="stat-label">Minutos</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         PROMEDIO DIARIO
+    ============================================================ -->
+<section class="stats-box">
+    <h3 style="display:flex;align-items:center;gap:6px;">
+        📈 Promedio diario (Pomodoro)
+    </h3>
+
+    <div class="stats-row">
+        <div class="stat-item">
+            <span id="daily-average" class="stat-number blue">0</span>
+            <span class="stat-label">Min</span>
+        </div>
+    </div>
+</section>
+
+
+    <!-- ============================================================
+         TIMER
+    ============================================================ -->
+    <section class="stats-box">
+        <h3>Timer</h3>
+
+        <div class="stats-row">
+            <div class="stat-item">
+                <span id="timer-total-minutes" class="stat-number green">0</span>
+                <span class="stat-label">Minutos totales</span>
+            </div>
+
+            <div class="stat-item">
+                <span id="timer-avg-minutes" class="stat-number blue">0</span>
+                <span class="stat-label">Promedio por uso (min)</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         STOPWATCH
+    ============================================================ -->
+    <section class="stats-box">
+        <h3>Stopwatch</h3>
+
+        <div class="stats-row">
+            <div class="stat-item">
+                <span id="sw-total-minutes" class="stat-number green">0</span>
+                <span class="stat-label">Minutos totales</span>
+            </div>
+
+            <div class="stat-item">
+                <span id="sw-longest" class="stat-number blue">0</span>
+                <span class="stat-label">Sesión más larga (min)</span>
+            </div>
+
+            <div class="stat-item">
+                <span id="sw-avg-minutes" class="stat-number blue">0</span>
+                <span class="stat-label">Promedio por sesión (min)</span>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<script type="module" src="assets/js/supabase.js"></script>
+<script type="module" src="assets/js/stats.js"></script>
+
+</body>
+</html>
