@@ -7,6 +7,12 @@ import { Stopwatch } from './stopwatch.js';
 import { saveSession } from './saveSession.js';
 import { supabase } from './supabase.js';
 
+
+// AUDIO (NUEVO)
+// ===========================
+// Asegúrate de que el archivo esté en assets/sounds/alarm.mp3
+const alarmAudio = new Audio('assets/sounds/pomodoro_ring.mp3.wav');
+
 // ===========================
 // FUNCIÓN PARA PLAY/PAUSE
 // ===========================
@@ -233,7 +239,7 @@ formRegister.addEventListener("submit", async (e) => {
 
 
 // ==========================================
-//          SISTEMA DE TAREAS (TODO) - NUEVO
+//          SISTEMA DE TAREAS (PERSISTENTE)
 // ==========================================
 const btnTasks = document.getElementById("btn-tasks");
 const closeTasks = document.getElementById("close-tasks");
@@ -241,7 +247,13 @@ const formAddTask = document.getElementById("form-add-task");
 const inputTask = document.getElementById("input-task");
 const tasksList = document.getElementById("tasks-list");
 
-let tasks = []; // Array en memoria (se reinicia al recargar)
+// 1. Cargar tareas guardadas al iniciar (o array vacío si no existen)
+let tasks = JSON.parse(localStorage.getItem('pomodo_tasks')) || [];
+
+// 2. Función para guardar en localStorage
+function saveTasks() {
+    localStorage.setItem('pomodo_tasks', JSON.stringify(tasks));
+}
 
 // Abrir Modal de Tareas
 btnTasks.addEventListener("click", () => {
@@ -268,6 +280,8 @@ formAddTask.addEventListener("submit", (e) => {
     };
 
     tasks.push(newTask);
+    saveTasks(); // <--- GUARDAR CAMBIOS
+    
     inputTask.value = "";
     renderTasks();
 });
@@ -302,12 +316,14 @@ window.toggleTask = (id) => {
     const task = tasks.find(t => t.id === id);
     if (task) {
         task.completed = !task.completed;
+        saveTasks(); // <--- GUARDAR CAMBIOS
         renderTasks();
     }
 };
 
 window.deleteTask = (id) => {
     tasks = tasks.filter(t => t.id !== id);
+    saveTasks(); // <--- GUARDAR CAMBIOS
     renderTasks();
 };
 
@@ -403,6 +419,12 @@ const pomodoro = new PomodoroTimer(
         pill.textContent = phaseLabel;
 
         updatePlayButton(pomoBtns.children[0], isRunning);
+
+        // 🔥 LOGICA DE AUDIO AGREGADA AQUI
+        if (finishedPhase) {
+            alarmAudio.currentTime = 0; // Reiniciar audio
+            alarmAudio.play().catch(e => console.error("Error reproduciendo audio:", e));
+        }
     },
 
     (minutesStudied) => {
