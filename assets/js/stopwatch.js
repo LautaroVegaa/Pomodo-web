@@ -1,24 +1,27 @@
 export class Stopwatch {
     constructor(uiCallback) {
         this.updateUI = uiCallback;
+
         this.timer = null;
         this.seconds = 0;
         this.isRunning = false;
     }
 
     startStop() {
-        if (this.isRunning) {
-            this.pause();
-        } else {
-            this.start();
-        }
+        if (this.isRunning) this.pause();
+        else this.start();
     }
 
     start() {
         this.isRunning = true;
+
+        // 🔥 ahora enviamos isRunning = true
         this.updateUI(this.formatTime(), true);
+
         this.timer = setInterval(() => {
             this.seconds++;
+            
+            // 🔥 mantener UI actualizada en modo running
             this.updateUI(this.formatTime(), true);
         }, 1000);
     }
@@ -26,13 +29,17 @@ export class Stopwatch {
     pause() {
         this.isRunning = false;
         clearInterval(this.timer);
+
+        // 🔥 isRunning = false
         this.updateUI(this.formatTime(), false);
     }
 
     reset() {
         this.pause();
         this.seconds = 0;
-        this.updateUI("00:00", false);
+
+        // 🔥 isRunning = false
+        this.updateUI(this.formatTime(), false);
     }
 
     formatTime() {

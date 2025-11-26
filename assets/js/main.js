@@ -1,84 +1,252 @@
+// ===========================
+// IMPORTS
+// ===========================
 import { PomodoroTimer } from './pomodoro.js';
+import { TimerMode } from './timer.js';
 import { Stopwatch } from './stopwatch.js';
 
-// --- ELEMENTOS DOM ---
-const viewPomo = document.getElementById('view-pomodoro');
+
+// ===========================
+// FUNCIÓN PARA PLAY/PAUSE
+// ===========================
+function updatePlayButton(button, isRunning) {
+    button.textContent = isRunning ? "⏸" : "▶";
+}
+
+
+// ===========================
+// ELEMENTOS DE LA UI
+// ===========================
+
+// Tabs
+const tabs = document.querySelectorAll(".tab");
+const tabPomodoro = tabs[0];
+const tabTimer = tabs[1];
+const tabStopwatch = tabs[2];
+
+// Vistas
+const viewPomodoro = document.getElementById('view-pomodoro');
 const viewTimer = document.getElementById('view-timer');
-const viewSw = document.getElementById('view-stopwatch');
-const statsSection = document.getElementById('stats-section');
+const viewStopwatch = document.getElementById('view-stopwatch');
 
-// Botones de Modo
-const modeBtns = document.querySelectorAll('.mode-btn');
+// Displays
+const displayPomodoro = document.getElementById('pomodoro-time');
+const displayTimer = document.getElementById('timer-time');
+const displayStopwatch = document.getElementById('stopwatch-time');
 
-// --- INSTANCIAS ---
+// Botones dentro de cada card
+const pomoBtns = viewPomodoro.querySelector('.actions');
+const timerBtns = viewTimer.querySelector('.actions');
+const swBtns = viewStopwatch.querySelector('.actions');
 
-// 1. Pomodoro Logic
-const pomoDisplay = document.getElementById('pomo-time');
-const pomoBtn = document.getElementById('pomo-main-btn');
-const pomoLabel = document.getElementById('pomo-phase-label');
-const pomoPhrase = document.getElementById('pomo-phrase');
+// Slider del Timer
+const timerSlider = document.getElementById("timer-slider");
+const timerSliderValue = document.getElementById("timer-slider-value");
 
-const pomodoro = new PomodoroTimer((time, isRunning, label, phrase) => {
-    pomoDisplay.textContent = time;
-    pomoBtn.textContent = isRunning ? "PAUSAR" : "INICIAR";
-    pomoBtn.style.backgroundColor = isRunning ? "#EF4444" : "#3B82F6"; // Rojo al pausar
-    pomoBtn.style.boxShadow = isRunning ? "0 6px 0 #B91C1C" : "0 6px 0 rgb(29, 78, 216)";
-    
-    if (label) pomoLabel.textContent = label;
-    if (phrase) pomoPhrase.textContent = `"${phrase}"`;
-    document.title = `${time} - Pomodō`;
+
+// ===========================
+// QUICK SETTINGS MODAL
+// ===========================
+const qsModal = document.getElementById("qs-modal");
+const qsModalTitle = document.getElementById("qs-modal-title");
+const qsModalValue = document.getElementById("qs-modal-value");
+const qsModalSlider = document.getElementById("qs-modal-slider");
+const qsModalSave = document.getElementById("qs-modal-save");
+
+// Botones Quick Settings
+const qsFocusBox = document.querySelector(".qs-box:nth-child(1)");
+const qsBreakBox = document.querySelector(".qs-box:nth-child(2)");
+
+let qsMode = "focus"; // 'focus' o 'break'
+
+
+// ==========================
+// EVENTOS QUICK SETTINGS
+// ==========================
+
+qsFocusBox.addEventListener("click", () => {
+    qsMode = "focus";
+    qsModalTitle.textContent = "Focus Time";
+    qsModalSlider.max = 60;
+    qsModalSlider.value = pomodoro.defaultWork / 60;
+    qsModalValue.textContent = `${qsModalSlider.value} min`;
+
+    qsModal.classList.remove("qs-modal-hidden");
 });
 
-document.getElementById('pomo-main-btn').addEventListener('click', () => pomodoro.startStop());
-document.getElementById('pomo-skip-btn').addEventListener('click', () => pomodoro.skip());
+qsBreakBox.addEventListener("click", () => {
+    qsMode = "break";
+    qsModalTitle.textContent = "Short Break";
+    qsModalSlider.max = 30;
+    qsModalSlider.value = pomodoro.defaultShort / 60;
+    qsModalValue.textContent = `${qsModalSlider.value} min`;
 
-// 2. Stopwatch Logic
-const swDisplay = document.getElementById('stopwatch-time');
-const swBtn = document.getElementById('sw-main-btn');
-
-const stopwatch = new Stopwatch((time, isRunning) => {
-    swDisplay.textContent = time;
-    swBtn.textContent = isRunning ? "DETENER" : "INICIAR";
+    qsModal.classList.remove("qs-modal-hidden");
 });
 
-document.getElementById('sw-main-btn').addEventListener('click', () => stopwatch.startStop());
-document.getElementById('sw-reset-btn').addEventListener('click', () => stopwatch.reset());
-
-// 3. Navigation Logic
-modeBtns.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-        // Switch Tabs visual
-        modeBtns.forEach(b => b.classList.remove('active'));
-        e.target.classList.add('active');
-
-        // Hide all views
-        viewPomo.classList.remove('active-view');
-        viewTimer.classList.remove('active-view');
-        viewSw.classList.remove('active-view');
-
-        // Show selected
-        const mode = e.target.dataset.mode;
-        if (mode === 'pomodoro') viewPomo.classList.add('active-view');
-        if (mode === 'timer') viewTimer.classList.add('active-view');
-        if (mode === 'stopwatch') viewSw.classList.add('active-view');
-    });
+qsModalSlider.addEventListener("input", () => {
+    qsModalValue.textContent = `${qsModalSlider.value} min`;
 });
 
-// Toggle Stats
-document.getElementById('btn-stats').addEventListener('click', () => {
-    if (statsSection.style.display === 'block') {
-        statsSection.style.display = 'none';
-    } else {
-        statsSection.style.display = 'block';
-        // Aquí podrías llamar a getStats() y actualizar el DOM
+qsModalSave.addEventListener("click", () => {
+    const minutes = Number(qsModalSlider.value);
+
+    if (qsMode === "focus") {
+        pomodoro.defaultWork = minutes * 60;
+        pomodoro.totalSeconds = pomodoro.defaultWork;
+        qsFocusBox.querySelector(".qs-number").textContent = minutes;
+
+        if (currentMode === "pomodoro") {
+            displayPomodoro.textContent = pomodoro.formatTime();
+        }
+    }
+
+    if (qsMode === "break") {
+        pomodoro.defaultShort = minutes * 60;
+        qsBreakBox.querySelector(".qs-number").textContent = minutes;
+    }
+
+    qsModal.classList.add("qs-modal-hidden");
+});
+
+qsModal.addEventListener("click", (e) => {
+    if (e.target === qsModal) {
+        qsModal.classList.add("qs-modal-hidden");
     }
 });
 
-// Timer Slider Logic (Demo simple)
-const slider = document.getElementById('timer-slider');
-const sliderVal = document.getElementById('slider-val');
-const timerDisplay = document.getElementById('timer-time');
-slider.addEventListener('input', (e) => {
-    sliderVal.textContent = e.target.value;
-    timerDisplay.textContent = `${e.target.value.padStart(2,'0')}:00`;
+
+// ===========================
+// ESTADO GLOBAL
+// ===========================
+let currentMode = "pomodoro";
+
+
+// ===========================
+// INSTANCIAS
+// ===========================
+
+// Pomodoro
+const pomodoro = new PomodoroTimer((time, isRunning, phaseLabel) => {
+    if (currentMode !== "pomodoro") return;
+
+    displayPomodoro.textContent = time;
+
+    const pill = viewPomodoro.querySelector(".pill");
+    pill.textContent = phaseLabel;
+
+    updatePlayButton(pomoPlayBtn, isRunning);
 });
+
+// Timer
+const customTimer = new TimerMode((time, isRunning) => {
+    if (currentMode !== "timer") return;
+
+    displayTimer.textContent = time;
+    timerSliderValue.textContent = time;
+
+    updatePlayButton(timerPlayBtn, isRunning);
+});
+
+// Stopwatch
+const stopwatch = new Stopwatch((time, isRunning) => {
+    if (currentMode !== "stopwatch") return;
+
+    displayStopwatch.textContent = time;
+
+    updatePlayButton(swPlayBtn, isRunning);
+});
+
+
+// ===========================
+// CAMBIAR ENTRE VISTAS
+// ===========================
+function activateView(mode) {
+    currentMode = mode;
+
+    viewPomodoro.classList.remove("active-view");
+    viewTimer.classList.remove("active-view");
+    viewStopwatch.classList.remove("active-view");
+
+    pomodoro.pause();
+    customTimer.pause();
+    stopwatch.pause();
+
+    // 🔥 Reset de botones al cambiar vista
+    updatePlayButton(pomoPlayBtn, false);
+    updatePlayButton(timerPlayBtn, false);
+    updatePlayButton(swPlayBtn, false);
+
+    if (mode === "pomodoro") {
+        viewPomodoro.classList.add("active-view");
+        displayPomodoro.textContent = pomodoro.formatTime();
+    } 
+    else if (mode === "timer") {
+        viewTimer.classList.add("active-view");
+        timerSlider.value = customTimer.totalSeconds / 60;
+        timerSliderValue.textContent = customTimer.formatTime();
+        displayTimer.textContent = customTimer.formatTime();
+    } 
+    else {
+        viewStopwatch.classList.add("active-view");
+        displayStopwatch.textContent = stopwatch.formatTime();
+    }
+}
+
+
+// ===========================
+// EVENTOS DE TABS
+// ===========================
+tabs.forEach((tab, index) => {
+    tab.addEventListener("click", () => {
+        tabs.forEach(t => t.classList.remove("active"));
+        tab.classList.add("active");
+
+        if (index === 0) activateView("pomodoro");
+        if (index === 1) activateView("timer");
+        if (index === 2) activateView("stopwatch");
+    });
+});
+
+
+// ===========================
+// BOTONES PLAY / RESET
+// ===========================
+
+// Pomodoro
+const pomoPlayBtn = pomoBtns.children[0];
+const pomoResetBtn = pomoBtns.children[1];
+pomoPlayBtn.addEventListener('click', () => pomodoro.startStop());
+pomoResetBtn.addEventListener('click', () => pomodoro.reset());
+
+// Timer
+const timerPlayBtn = timerBtns.children[0];
+const timerResetBtn = timerBtns.children[1];
+timerPlayBtn.addEventListener('click', () => customTimer.startStop());
+timerResetBtn.addEventListener('click', () => customTimer.reset());
+
+// Stopwatch
+const swPlayBtn = swBtns.children[0];
+const swResetBtn = swBtns.children[1];
+swPlayBtn.addEventListener('click', () => stopwatch.startStop());
+swResetBtn.addEventListener('click', () => stopwatch.reset());
+
+
+// ===========================
+// SLIDER DEL TIMER (1–600 min)
+// ===========================
+timerSlider.addEventListener("input", () => {
+    const minutes = Number(timerSlider.value);
+    customTimer.setDuration(minutes);
+    timerSliderValue.textContent = customTimer.formatTime();
+
+    if (currentMode === "timer") {
+        displayTimer.textContent = customTimer.formatTime();
+    }
+});
+
+
+// ===========================
+// INICIAR EN POMODORO
+// ===========================
+activateView("pomodoro");

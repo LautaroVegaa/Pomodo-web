@@ -1,6 +1,4 @@
-import { saveSession } from './supabase.js';
-
-// Frases extraídas de tu código Flutter
+// Frases opcionales
 const focusPhrases = [
     "El foco es un músculo: si no lo usás, se atrofia.",
     "La dopamina fácil secuestra tu curiosidad natural.",
@@ -11,31 +9,35 @@ const focusPhrases = [
 export class PomodoroTimer {
     constructor(uiCallback) {
         this.updateUI = uiCallback;
+
         this.timer = null;
-        this.minutes = 25;
-        this.seconds = 0;
         this.isRunning = false;
-        this.phase = 'work'; // work, shortBreak, longBreak
+
+        this.phase = "work";      // work, shortBreak, longBreak
         this.cycle = 1;
-        this.totalSeconds = 25 * 60;
+
+        this.defaultWork = 25 * 60;
+        this.defaultShort = 5 * 60;
+        this.defaultLong = 15 * 60;
+
+        this.totalSeconds = this.defaultWork;
     }
 
     startStop() {
-        if (this.isRunning) {
-            this.pause();
-        } else {
-            this.start();
-        }
+        if (this.isRunning) this.pause();
+        else this.start();
     }
 
     start() {
         this.isRunning = true;
-        this.updateUI(this.formatTime(), this.isRunning, this.getPhaseLabel(), this.getPhrase());
-        
+
+        // 🔥 IMPORTANTE: ahora enviamos isRunning al callback
+        this.updateUI(this.formatTime(), true, this.getPhaseLabel());
+
         this.timer = setInterval(() => {
             if (this.totalSeconds > 0) {
                 this.totalSeconds--;
-                this.updateUI(this.formatTime(), this.isRunning);
+                this.updateUI(this.formatTime(), true, this.getPhaseLabel());
             } else {
                 this.completePhase();
             }
@@ -44,40 +46,52 @@ export class PomodoroTimer {
 
     pause() {
         this.isRunning = false;
+
+        // 🔥 También informamos que está detenido
+        this.updateUI(this.formatTime(), false, this.getPhaseLabel());
+
         clearInterval(this.timer);
-        this.updateUI(this.formatTime(), this.isRunning);
+    }
+
+    reset() {
+        this.pause();
+        this.phase = "work";
+        this.cycle = 1;
+        this.totalSeconds = this.defaultWork;
+
+        // 🔥 Seguimos informando isRunning = false
+        this.updateUI(this.formatTime(), false, this.getPhaseLabel());
     }
 
     completePhase() {
         this.pause();
-        // Guardar sesión si es trabajo
-        if (this.phase === 'work') {
-            saveSession(25, 'work'); // Asumiendo duración fija por ahora
-        }
         this.nextPhase();
-        // Autostart logic could go here
     }
 
     nextPhase() {
-        if (this.phase === 'work') {
-            if (this.cycle % 4 === 0) {
-                this.phase = 'longBreak';
-                this.totalSeconds = 15 * 60;
-            } else {
-                this.phase = 'shortBreak';
-                this.totalSeconds = 5 * 60;
-            }
-        } else {
-            this.phase = 'work';
-            this.totalSeconds = 25 * 60;
-            this.cycle++;
-        }
-        this.updateUI(this.formatTime(), false, this.getPhaseLabel(), this.getPhrase());
-    }
+        // ======================
+        // CAMBIO AUTOMÁTICO DE FASES
+        // ======================
+        if (this.phase === "work") {
 
-    skip() {
-        this.pause();
-        this.nextPhase();
+            // Cada 4 ciclos → descanso largo
+            if (this.cycle % 4 === 0) {
+                this.phase = "longBreak";
+                this.totalSeconds = this.defaultLong;
+            } else {
+                this.phase = "shortBreak";
+                this.totalSeconds = this.defaultShort;
+            }
+
+        } else {
+            // Volver a trabajo
+            this.phase = "work";
+            this.totalSeconds = this.defaultWork;
+            this.cycle++; // aumenta ciclo solo al volver a enfoque
+        }
+
+        // 🔥 Se envía isRunning = false porque inicia detenido
+        this.updateUI(this.formatTime(), false, this.getPhaseLabel());
     }
 
     formatTime() {
@@ -87,12 +101,19 @@ export class PomodoroTimer {
     }
 
     getPhaseLabel() {
-        if (this.phase === 'work') return `Enfoque • Ciclo ${this.cycle}`;
-        if (this.phase === 'shortBreak') return "Descanso Corto";
-        return "Descanso Largo";
+        if (this.phase === "work") {
+            return `Enfoque - Ciclo ${this.cycle}`;
+        }
+        if (this.phase === "shortBreak") {
+            return `Descanso Corto - Ciclo ${this.cycle}`;
+        }
+        if (this.phase === "longBreak") {
+            return `Descanso Largo - Ciclo ${this.cycle}`;
+        }
     }
 
     getPhrase() {
+        if (this.phase !== "work") return "";
         return focusPhrases[Math.floor(Math.random() * focusPhrases.length)];
     }
 }

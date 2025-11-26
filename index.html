@@ -33,40 +33,130 @@
 <!-- MAIN CONTENT -->
 <main class="main-container">
 
-<div class="timer-card">
-    <div class="pill">Enfoque - Ciclo 1</div>
+    <!-- ===================== POMODORO VIEW ===================== -->
+    <div id="view-pomodoro" class="view active-view">
 
-    <div class="timer-text">24:54</div>
+        <div class="timer-card">
+            <div class="pill">Enfoque - Ciclo 1</div>
 
-    <div class="progress-bar">
-        <div class="progress"></div>
-    </div>
+            <div class="timer-text" id="pomodoro-time">25:00</div>
 
-    <div class="actions">
-        <button class="circle-btn">▶</button>
-        <button class="circle-btn">↺</button>
-    </div>
-</div>
+            <div class="progress-bar">
+                <div class="progress"></div>
+            </div>
 
-
-    <div class="qs-title">⚙️ Quick Settings</div>
-
-    <div class="qs-grid">
-        <div class="qs-box">
-            <div class="qs-number">25</div>
-            <div class="qs-min">min</div>
-            <div class="qs-desc">Focus Time</div>
+            <div class="actions">
+                <button class="circle-btn">▶</button>
+                <button class="circle-btn">↺</button>
+            </div>
         </div>
 
-        <div class="qs-box active">
-            <div class="qs-number">5</div>
-            <div class="qs-min">min</div>
-            <div class="qs-desc">Short Break</div>
+        <div class="qs-title">⚙️ Quick Settings</div>
+
+        <div class="qs-grid">
+            <div class="qs-box">
+                <div class="qs-number">25</div>
+                <div class="qs-min">min</div>
+                <div class="qs-desc">Focus Time</div>
+            </div>
+
+            <div class="qs-box active">
+                <div class="qs-number">5</div>
+                <div class="qs-min">min</div>
+                <div class="qs-desc">Short Break</div>
+            </div>
         </div>
+
+    </div>
+
+
+    <!-- ===================== TIMER VIEW ===================== -->
+    <div id="view-timer" class="view">
+
+        <div class="timer-card">
+            <div class="pill">Timer</div>
+
+            <div class="timer-text" id="timer-time">25:00</div>
+
+            <div class="progress-bar">
+                <div class="progress"></div>
+            </div>
+
+            <div class="actions">
+                <button class="circle-btn">▶</button>
+                <button class="circle-btn">↺</button>
+            </div>
+        </div>
+
+        <!-- === SLIDER DEL TIMER === -->
+        <div class="timer-slider-container">
+            <label class="slider-label">Adjust Duration</label>
+
+            <div class="slider-value-display" id="timer-slider-value">25:00</div>
+
+            <input 
+                type="range" 
+                id="timer-slider" 
+                min="1" 
+                max="600" 
+                value="25"
+                class="timer-slider"
+            >
+        </div>
+
+    </div>
+
+
+    <!-- ===================== STOPWATCH VIEW ===================== -->
+    <div id="view-stopwatch" class="view">
+
+        <div class="timer-card">
+            <div class="pill">Stopwatch</div>
+
+            <div class="timer-text" id="stopwatch-time">00:00</div>
+
+            <div class="progress-bar">
+                <div class="progress" style="width: 0%;"></div>
+            </div>
+
+            <div class="actions">
+                <button class="circle-btn">▶</button>
+                <button class="circle-btn">↺</button>
+            </div>
+        </div>
+
     </div>
 
 </main>
-<script src="assets/js/main.js"></script>
+
+<!-- ===================== MODAL QUICK SETTINGS ===================== -->
+<div id="qs-modal" class="qs-modal-hidden">
+
+    <div class="qs-modal-backdrop"></div>
+
+    <div class="qs-modal">
+
+        <div class="qs-modal-title" id="qs-modal-title">Adjust Time</div>
+
+        <div class="qs-modal-value" id="qs-modal-value">25 min</div>
+
+        <input 
+            type="range" 
+            id="qs-modal-slider"
+            min="1"
+            max="60"
+            value="25"
+            class="qs-modal-slider"
+        >
+
+        <button class="qs-modal-save" id="qs-modal-save">Save</button>
+
+    </div>
+
+</div>
+
+
+<script type="module" src="assets/js/main.js"></script>
 
 </body>
 </html>

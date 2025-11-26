@@ -217,3 +217,135 @@ body {
     font-size: 13px;
     opacity: 0.85;
 }
+
+
+/* ===================================== */
+/*         NUEVO: OCULTAR VISTAS         */
+/* ===================================== */
+
+.view {
+    display: none;
+}
+
+.active-view {
+    display: block;
+}
+
+/* ============================== */
+/*        SLIDER TIMER            */
+/* ============================== */
+
+.timer-slider-container {
+    width: 100%;
+    max-width: 620px;
+    margin: 35px auto 0 auto;
+    text-align: center;
+}
+
+.slider-label {
+    font-size: 16px;
+    opacity: 0.8;
+    margin-bottom: 6px;
+    display: block;
+}
+
+.slider-value-display {
+    font-size: 26px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: #cfe0ff;
+}
+
+.timer-slider {
+    width: 100%;
+    -webkit-appearance: none;
+    height: 8px;
+    border-radius: 6px;
+    background: #233149;
+    outline: none;
+    cursor: pointer;
+}
+
+.timer-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: #3a82f7;
+    cursor: pointer;
+    transition: 0.15s;
+}
+
+.timer-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.15);
+}
+
+/* =============================== */
+/*        QUICK SETTINGS MODAL     */
+/* =============================== */
+
+.qs-modal-hidden {
+    display: none;
+}
+
+#qs-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2000;
+}
+
+.qs-modal-backdrop {
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.45);
+    backdrop-filter: blur(4px);
+    position: absolute;
+}
+
+.qs-modal {
+    width: 360px;
+    padding: 24px;
+    background: #192336;
+    border-radius: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    box-shadow: 0 8px 22px rgba(0,0,0,0.4);
+}
+
+.qs-modal-title {
+    font-size: 20px;
+    margin-bottom: 12px;
+}
+
+.qs-modal-value {
+    font-size: 34px;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+
+.qs-modal-slider {
+    width: 100%;
+    margin-bottom: 22px;
+}
+
+.qs-modal-save {
+    padding: 10px 25px;
+    border: none;
+    border-radius: 8px;
+    background: #3a82f7;
+    color: white;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.qs-modal-save:hover {
+    background: #4a8fff;
+}
+
+
