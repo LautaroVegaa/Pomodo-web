@@ -14,8 +14,8 @@
 
     <div class="nav-right">
         <button class="top-btn" id="btn-tasks">📝 Tareas</button>
-        <button class="top-btn" id="btn-login">👤 Login</button>
         <button class="top-btn" onclick="location.href='stats.html'">📊 Stats</button>
+        <button class="top-btn" id="btn-login">👤 Login</button>
         <button class="top-btn" onclick="location.href='settings.html'">⚙️</button>
     </div>
 </header>
@@ -180,15 +180,34 @@
 
 <div id="modal-profile" class="auth-modal-hidden">
     <div class="auth-backdrop"></div>
-    <div class="auth-card">
-        <button id="close-profile" style="position:absolute; top:15px; right:15px; color:#fff; font-size:20px;">&times;</button>
+    <div class="auth-card" style="max-width: 380px; text-align: center;">
+        <button id="close-profile">&times;</button>
         <div class="profile-content">
-            <div class="profile-avatar" id="profile-avatar-text">U</div>
-            <h2 class="auth-title" id="profile-name">Cargando...</h2>
+            <div class="profile-avatar-big" id="profile-avatar-text">U</div>
+            <h2 class="auth-title" id="profile-name" style="margin-top:15px;">Cargando...</h2>
             <p class="auth-subtitle" id="profile-email">...</p>
-            <div class="profile-badge">
-                <span>🚀 Usuario PRO</span>
+            <div class="profile-badge-container">
+                <div class="badge-pro">
+                    🚀 Usuario PRO
+                </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<div id="modal-logout-confirm" class="auth-modal-hidden">
+    <div class="auth-backdrop"></div>
+    <div class="auth-card" style="max-width: 360px; border: 1px solid rgba(255,255,255,0.05);">
+        <h2 class="auth-title" style="margin-bottom: 10px;">Cerrar sesión</h2>
+        <p class="auth-subtitle" style="margin-bottom: 25px;">¿Estás seguro de que quieres salir?</p>
+        
+        <div style="display: flex; gap: 12px;">
+            <button id="btn-cancel-logout" class="auth-btn" style="background: rgba(255,255,255,0.08); color: #ccc;">
+                Cancelar
+            </button>
+            <button id="btn-confirm-logout" class="auth-btn" style="background: #ef4444; color: white;">
+                Salir
+            </button>
         </div>
     </div>
 </div>
@@ -198,7 +217,7 @@
     <div class="auth-card" style="max-width: 450px;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
             <h2 class="auth-title" style="margin:0;">Mis Tareas</h2>
-            <button id="close-tasks" style="color:#fff; font-size:24px;">&times;</button>
+            <button id="close-tasks">&times;</button>
         </div>
         <form id="form-add-task" style="display:flex; gap:10px; margin-bottom:20px;">
             <input type="text" id="input-task" placeholder="¿En qué vas a trabajar?" class="task-input" required autocomplete="off">
@@ -207,6 +226,19 @@
         <div id="tasks-list" class="tasks-container-scroll">
             <div class="empty-state">No hay tareas pendientes</div>
         </div>
+    </div>
+</div>
+
+<div id="user-dropdown" class="dropdown-hidden">
+    <div class="dropdown-item" id="menu-account">
+        <span class="icon">👤</span> Account
+    </div>
+    <div class="dropdown-item" id="menu-premium">
+        <span class="icon">👑</span> Premium
+    </div>
+    <div class="dropdown-divider"></div>
+    <div class="dropdown-item" id="menu-logout">
+        <span class="icon">🚪</span> Logout
     </div>
 </div>
 

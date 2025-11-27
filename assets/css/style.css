@@ -648,3 +648,322 @@ body {
     margin-top: 20px;
     font-style: italic;
 }
+/* =========================================
+   ESTILOS CORREGIDOS: LISTA DE TAREAS
+   ========================================= */
+
+/* 1. El contenedor principal de la tarea */
+.task-item {
+    display: flex;                  /* Activa Flexbox */
+    justify-content: space-between; /* Texto a la izquierda, botones a la derecha */
+    align-items: center;            /* Centrado vertical perfecto */
+    
+    background: rgba(255,255,255,0.03);
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    border: 1px solid rgba(255,255,255,0.05);
+    transition: 0.2s;
+}
+
+/* Efecto hover en toda la fila */
+.task-item:hover {
+    background: rgba(255,255,255,0.06);
+}
+
+/* Borde azul si es la tarea activa */
+.task-item.active-border {
+    border: 1px solid #3a82f7;
+    background: rgba(58, 130, 247, 0.1);
+}
+
+/* 2. Lado Izquierdo (Checkbox + Texto) */
+.task-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;     /* Espacio entre el checkbox y el texto */
+    flex: 1;       /* Ocupa todo el espacio disponible empujando los botones al final */
+    overflow: hidden; 
+}
+
+/* Texto de la tarea */
+.task-text {
+    font-size: 15px;
+    color: #e5e7eb;
+    white-space: nowrap;      /* Evita que el texto salte de línea si es largo */
+    overflow: hidden;
+    text-overflow: ellipsis;  /* Pone "..." si es muy largo */
+}
+
+/* 3. Lado Derecho (Contenedor de Botones) */
+.task-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Espacio entre el botón Play y el Tacho */
+    margin-left: 10px; /* Separación mínima con el texto */
+}
+
+/* 4. Botón PLAY (Estilo verde) */
+.btn-play-task {
+    width: 32px;
+    height: 32px;
+    background: rgba(46, 204, 113, 0.15); /* Fondo verde transparente */
+    color: #2ecc71;                       /* Icono verde */
+    border: 1px solid rgba(46, 204, 113, 0.3);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 12px; /* Tamaño de la flechita */
+    transition: 0.2s;
+    padding: 0; /* Reseteo importante */
+}
+
+.btn-play-task:hover {
+    background: #2ecc71;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(46, 204, 113, 0.4);
+}
+
+/* 5. Botón TACHO (Estilo rojo - el que mejoramos antes) */
+.btn-delete-task {
+    width: 32px;
+    height: 32px;
+    background: rgba(239, 68, 68, 0.1); 
+    color: #ef4444; 
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: 8px; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 16px; 
+    padding: 0;
+}
+
+.btn-delete-task:hover {
+    background: #ef4444; 
+    color: white;       
+    border-color: #ef4444;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4); 
+}
+
+/* =========================================
+   BOTÓN CERRAR (X) - SIN GIRO
+   ========================================= */
+
+#close-tasks {
+    /* 1. Resetear estilos nativos */
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    
+    /* 2. Dimensiones y centrado */
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    
+    /* 3. Tipografía */
+    color: #9ca3af; 
+    font-size: 28px;
+    font-family: sans-serif;
+    line-height: 1;
+    
+    /* 4. Transición suave */
+    transition: all 0.2s ease;
+}
+
+/* Efecto Hover: Fondo sutil + Levantarse */
+#close-tasks:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    transform: translateY(-2px); /* Solo sube un poquito, sin girar */
+}
+
+/* Estilo para cuando el botón se convierte en Avatar */
+#btn-login.avatar-mode {
+    width: 38px;             /* Mismo alto que los otros botones */
+    height: 38px;
+    padding: 0;              /* Quitar padding rectangular */
+    border-radius: 50%;      /* Círculo perfecto */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+    background: #3a82f7;     /* Azul primario para resaltar */
+    border: 1px solid #3a82f7;
+    color: white;
+}
+
+#btn-login.avatar-mode:hover {
+    background: #2b6cdb;     /* Azul más oscuro al pasar el mouse */
+}
+
+/* =========================================
+   ESTILOS MODAL PERFIL
+   ========================================= */
+
+/* 1. Botón Cerrar (X) - Igual que Tareas */
+#close-profile {
+    position: absolute; /* Lo mantenemos absoluto para este modal */
+    top: 20px;
+    right: 20px;
+    background: transparent !important;
+    border: none !important;
+    color: #9ca3af;
+    font-size: 28px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+#close-profile:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* 2. Avatar Grande Central */
+.profile-avatar-big {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 15px auto; /* Centrado horizontal */
+    background: linear-gradient(135deg, #3a82f7, #2b6cdb); /* Gradiente Azul */
+    color: white;
+    font-size: 32px;
+    font-weight: 700;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 20px rgba(58, 130, 247, 0.4); /* Resplandor azul */
+    border: 3px solid rgba(255,255,255,0.1);
+}
+
+/* 3. Ajustes de Texto */
+#profile-name {
+    font-size: 22px;
+    margin-bottom: 4px;
+    color: #ffffff;
+}
+
+#profile-email {
+    font-size: 14px;
+    color: #94a3b8;
+    margin-bottom: 24px;
+}
+
+/* 4. Badge PRO Moderno */
+.profile-badge-container {
+    display: flex;
+    justify-content: center;
+}
+
+.badge-pro {
+    background: rgba(168, 85, 247, 0.15); /* Fondo violeta suave */
+    color: #d8b4fe;                       /* Texto violeta claro */
+    border: 1px solid rgba(168, 85, 247, 0.3);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+/* =========================================
+   Estilo del Botón Avatar y Menú Desplegable
+   ========================================= */
+
+/* 1. Botón Avatar: Cuadrado Redondeado */
+#btn-login.avatar-mode {
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    /* Cambio clave: radio menor para parecer un "app icon" */
+    border-radius: 6px; 
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    font-weight: 600;
+    font-size: 15px;
+    
+    /* Color de fondo sólido (Azul en tu tema, Rojo en Pomofocus) */
+    background: #3a82f7; 
+    border: 1px solid rgba(255,255,255,0.1);
+    color: white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: 0.2s;
+}
+
+#btn-login.avatar-mode:hover {
+    transform: translateY(1px);
+    background: #2b6cdb;
+}
+
+/* 2. Menú Desplegable (Popover) */
+.dropdown-hidden {
+    display: none;
+}
+
+#user-dropdown {
+    position: absolute;
+    /* Se posicionará con JS, pero damos estilos base */
+    width: 180px;
+    background: #1f2937; /* Fondo oscuro tarjeta */
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    z-index: 5000;
+    padding: 6px;
+    margin-top: 8px; /* Espacio con el botón */
+}
+
+/* Items del menú */
+.dropdown-item {
+    padding: 10px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    color: #e5e7eb;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: 0.1s;
+}
+
+.dropdown-item:hover {
+    background: rgba(255,255,255,0.08);
+    color: white;
+}
+
+.dropdown-item .icon {
+    font-size: 16px;
+    opacity: 0.8;
+}
+
+/* Separador */
+.dropdown-divider {
+    height: 1px;
+    background: rgba(255,255,255,0.1);
+    margin: 4px 0;
+}

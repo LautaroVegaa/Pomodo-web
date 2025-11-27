@@ -1,6 +1,7 @@
 import { supabase } from "./supabase.js";
 
-export async function saveSession({ duration, type }) {
+// Modificación: recibimos también taskId y taskName
+export async function saveSession({ duration, type, taskId, taskName }) {
     try {
         // Evitar guardar basura
         if (!duration || duration <= 0) {
@@ -32,13 +33,17 @@ export async function saveSession({ duration, type }) {
                     user_id: user.id,
                     duration_minutes: duration,
                     session_type: type,
+                    // --- INICIO CAMBIOS PARA TAREAS ---
+                    task_id: taskId || null,
+                    task_name: taskName || null
+                    // --- FIN CAMBIOS PARA TAREAS ---
                 }
             ]);
 
         if (error) {
             console.error("❌ Error guardando sesión:", error);
         } else {
-            console.log(`✓ Sesión guardada correctamente → ${duration} min (${type})`);
+            console.log(`✓ Sesión guardada correctamente → ${duration} min (${type}) - Tarea: ${taskName || "Ninguna"}`);
         }
 
     } catch (err) {

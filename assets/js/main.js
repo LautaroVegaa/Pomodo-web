@@ -8,10 +8,12 @@ import { saveSession } from './saveSession.js';
 import { supabase } from './supabase.js';
 
 
-// AUDIO (NUEVO)
+// AUDIO
 // ===========================
-// Asegúrate de que el archivo esté en assets/sounds/alarm.mp3
 const alarmAudio = new Audio('assets/sounds/pomodoro_ring.mp3.wav');
+
+// Variable global para la tarea activa
+let currentActiveTask = null; 
 
 // ===========================
 // FUNCIÓN PARA PLAY/PAUSE
@@ -56,8 +58,12 @@ const btnLoginHeader = document.getElementById("btn-login");
 const modalLogin = document.getElementById("modal-login");
 const modalRegister = document.getElementById("modal-register");
 const modalAlert = document.getElementById("modal-alert");
-const modalProfile = document.getElementById("modal-profile"); // Perfil
-const modalTasks = document.getElementById("modal-tasks");     // Tareas (NUEVO)
+const modalProfile = document.getElementById("modal-profile");
+const modalTasks = document.getElementById("modal-tasks");
+const modalLogout = document.getElementById("modal-logout-confirm"); // NUEVO
+
+// Menú Dropdown
+const dropdown = document.getElementById("user-dropdown");
 
 // Elementos de la Alerta
 const alertTitle = document.getElementById("alert-title");
@@ -69,6 +75,10 @@ const btnCloseProfile = document.getElementById("close-profile");
 const profileNameEl = document.getElementById("profile-name");
 const profileEmailEl = document.getElementById("profile-email");
 const profileAvatarEl = document.getElementById("profile-avatar-text");
+
+// Elementos Confirmación Logout (NUEVO)
+const btnCancelLogout = document.getElementById("btn-cancel-logout");
+const btnConfirmLogout = document.getElementById("btn-confirm-logout");
 
 // Formularios
 const formLogin = document.getElementById("form-login");
@@ -94,14 +104,29 @@ btnAlertOk.addEventListener("click", () => {
 });
 
 
-// --- 1. Verificar Usuario ---
+// --- 1. Verificar Usuario (Modo Avatar) ---
 async function checkUser() {
     const { data: { user } } = await supabase.auth.getUser();
+    
     if (user) {
-        const fullName = user.user_metadata?.full_name || "Usuario";
-        btnLoginHeader.textContent = `👤 ${fullName}`;
+        const fullName = user.user_metadata?.full_name || "U";
+        
+        // Obtener iniciales
+        const names = fullName.split(" ");
+        let initials = names[0][0];
+        if (names.length > 1) {
+            initials += names[names.length - 1][0];
+        }
+        
+        // Aplicar modo Avatar
+        btnLoginHeader.textContent = initials.toUpperCase();
+        btnLoginHeader.classList.add("avatar-mode");
+        btnLoginHeader.title = fullName;
+
     } else {
+        // Modo Invitado
         btnLoginHeader.textContent = "👤 Login";
+        btnLoginHeader.classList.remove("avatar-mode");
     }
 }
 checkUser();
@@ -120,45 +145,123 @@ function showRegister() {
 }
 
 function closeAuthModals() {
-    // Cerrar TODOS los modales
     modalLogin.classList.add("auth-modal-hidden");
     modalRegister.classList.add("auth-modal-hidden");
     modalAlert.classList.add("auth-modal-hidden");
     modalProfile.classList.add("auth-modal-hidden");
     modalTasks.classList.add("auth-modal-hidden");
+    modalLogout.classList.add("auth-modal-hidden"); // Cerrar también el de logout
 }
 
-// Click en Nombre de Usuario (Header)
-btnLoginHeader.addEventListener("click", async () => {
+// ---------------------------------------------------------
+// LÓGICA DEL BOTÓN LOGIN / AVATAR
+// ---------------------------------------------------------
+
+btnLoginHeader.addEventListener("click", async (e) => {
+    e.stopPropagation();
+
     const { data: { user } } = await supabase.auth.getUser();
 
     if (user) {
-        // SI ESTÁ LOGUEADO: Mostrar Perfil
-        const fullName = user.user_metadata?.full_name || "Usuario";
-        profileNameEl.textContent = fullName;
-        profileEmailEl.textContent = user.email;
-
-        // Generar iniciales
-        const initials = fullName.split(" ").map(n => n[0]).slice(0, 2).join("").toUpperCase();
-        profileAvatarEl.textContent = initials || "U";
-
-        modalProfile.classList.remove("auth-modal-hidden");
+        toggleDropdown();
     } else {
-        // SI NO ESTÁ LOGUEADO: Abrir Login
         showLogin();
     }
 });
 
-// Cerrar Perfil
+// Lógica del Dropdown
+function toggleDropdown() {
+    const isHidden = dropdown.classList.contains("dropdown-hidden");
+    
+    if (isHidden) {
+        const rect = btnLoginHeader.getBoundingClientRect();
+        dropdown.style.top = `${rect.bottom + window.scrollY}px`;
+        dropdown.style.left = `${rect.right - 180}px`;
+        
+        dropdown.classList.remove("dropdown-hidden");
+    } else {
+        dropdown.classList.add("dropdown-hidden");
+    }
+}
+
+// Cerrar menú al hacer click fuera
+document.addEventListener("click", (e) => {
+    if (!dropdown.contains(e.target) && e.target !== btnLoginHeader) {
+        dropdown.classList.add("dropdown-hidden");
+    }
+});
+
+
+// ---------------------------------------------------------
+// ACCIONES DEL MENÚ DESPLEGABLE
+// ---------------------------------------------------------
+
+// 1. Account -> Abre el Modal de Perfil
+const menuAccount = document.getElementById("menu-account");
+if (menuAccount) {
+    menuAccount.addEventListener("click", async () => {
+        dropdown.classList.add("dropdown-hidden");
+        
+        const { data: { user } } = await supabase.auth.getUser();
+        if(user) {
+            const fullName = user.user_metadata?.full_name || "Usuario";
+            profileNameEl.textContent = fullName;
+            profileEmailEl.textContent = user.email;
+            
+            const initials = fullName.split(" ").map(n => n[0]).slice(0, 2).join("").toUpperCase();
+            profileAvatarEl.textContent = initials;
+            
+            modalProfile.classList.remove("auth-modal-hidden");
+        }
+    });
+}
+
+// 2. Premium
+const menuPremium = document.getElementById("menu-premium");
+if (menuPremium) {
+    menuPremium.addEventListener("click", () => {
+        dropdown.classList.add("dropdown-hidden");
+        showNotification("¡Pronto disponible la versión Premium!", "👑 Premium");
+    });
+}
+
+// 3. Logout -> AHORA ABRE EL MODAL DE CONFIRMACIÓN
+const menuLogout = document.getElementById("menu-logout");
+if (menuLogout) {
+    menuLogout.addEventListener("click", () => {
+        dropdown.classList.add("dropdown-hidden");
+        modalLogout.classList.remove("auth-modal-hidden"); // <--- MUESTRA MODAL
+    });
+}
+
+// --- Lógica del Modal Logout ---
+
+if (btnCancelLogout) {
+    btnCancelLogout.addEventListener("click", () => {
+        modalLogout.classList.add("auth-modal-hidden");
+    });
+}
+
+if (btnConfirmLogout) {
+    btnConfirmLogout.addEventListener("click", async () => {
+        modalLogout.classList.add("auth-modal-hidden");
+        // Ejecutar Logout Real
+        await supabase.auth.signOut();
+        window.location.reload();
+    });
+}
+
+
+// Cerrar Modal Perfil (X)
 btnCloseProfile.addEventListener("click", () => {
     modalProfile.classList.add("auth-modal-hidden");
 });
 
-// Toggles entre Login y Registro
+// Toggles Login/Registro
 linkToRegister.addEventListener("click", showRegister);
 linkToLogin.addEventListener("click", showLogin);
 
-// Cerrar al hacer click en el fondo oscuro
+// Backdrops
 backdrops.forEach(bd => {
     bd.addEventListener("click", closeAuthModals);
 });
@@ -239,7 +342,7 @@ formRegister.addEventListener("submit", async (e) => {
 
 
 // ==========================================
-//          SISTEMA DE TAREAS (PERSISTENTE)
+//          SISTEMA DE TAREAS
 // ==========================================
 const btnTasks = document.getElementById("btn-tasks");
 const closeTasks = document.getElementById("close-tasks");
@@ -247,27 +350,22 @@ const formAddTask = document.getElementById("form-add-task");
 const inputTask = document.getElementById("input-task");
 const tasksList = document.getElementById("tasks-list");
 
-// 1. Cargar tareas guardadas al iniciar (o array vacío si no existen)
 let tasks = JSON.parse(localStorage.getItem('pomodo_tasks')) || [];
 
-// 2. Función para guardar en localStorage
 function saveTasks() {
     localStorage.setItem('pomodo_tasks', JSON.stringify(tasks));
 }
 
-// Abrir Modal de Tareas
 btnTasks.addEventListener("click", () => {
     renderTasks();
     modalTasks.classList.remove("auth-modal-hidden");
-    inputTask.focus(); // Poner foco en el input
+    inputTask.focus();
 });
 
-// Cerrar Modal
 closeTasks.addEventListener("click", () => {
     modalTasks.classList.add("auth-modal-hidden");
 });
 
-// Agregar Tarea
 formAddTask.addEventListener("submit", (e) => {
     e.preventDefault();
     const text = inputTask.value.trim();
@@ -280,13 +378,11 @@ formAddTask.addEventListener("submit", (e) => {
     };
 
     tasks.push(newTask);
-    saveTasks(); // <--- GUARDAR CAMBIOS
-    
+    saveTasks();
     inputTask.value = "";
     renderTasks();
 });
 
-// Renderizar Lista
 function renderTasks() {
     tasksList.innerHTML = "";
 
@@ -297,34 +393,54 @@ function renderTasks() {
 
     tasks.forEach(task => {
         const item = document.createElement("div");
-        item.className = `task-item ${task.completed ? "completed" : ""}`;
+        const isActive = currentActiveTask && currentActiveTask.id === task.id;
+        item.className = `task-item ${task.completed ? "completed" : ""} ${isActive ? "active-border" : ""}`;
 
         item.innerHTML = `
-            <div class="task-check ${task.completed ? "checked" : ""}" onclick="toggleTask(${task.id})">
-                ${task.completed ? "✓" : ""}
+            <div class="task-left">
+                <div class="task-check ${task.completed ? "checked" : ""}" onclick="toggleTask(${task.id})">
+                    ${task.completed ? "✓" : ""}
+                </div>
+                <span class="task-text">${task.text}</span>
             </div>
-            <span class="task-text">${task.text}</span>
-            <button class="btn-delete-task" onclick="deleteTask(${task.id})">🗑</button>
+            
+            <div class="task-actions">
+                <button class="btn-play-task" onclick="activateTask(${task.id})" title="Trabajar en esta tarea">
+                    ▶
+                </button>
+                <button class="btn-delete-task" onclick="deleteTask(${task.id})">🗑</button>
+            </div>
         `;
         
         tasksList.appendChild(item);
     });
 }
 
-// Funciones Globales (para acceder desde el HTML onclick)
 window.toggleTask = (id) => {
     const task = tasks.find(t => t.id === id);
     if (task) {
         task.completed = !task.completed;
-        saveTasks(); // <--- GUARDAR CAMBIOS
+        saveTasks();
         renderTasks();
     }
 };
 
 window.deleteTask = (id) => {
     tasks = tasks.filter(t => t.id !== id);
-    saveTasks(); // <--- GUARDAR CAMBIOS
+    saveTasks();
     renderTasks();
+};
+
+window.activateTask = (id) => {
+    const task = tasks.find(t => t.id === id);
+    if (task) {
+        currentActiveTask = task;
+        const pill = viewPomodoro.querySelector(".pill");
+        const currentPhaseLabel = pomodoro.getPhaseLabel(); 
+        pill.textContent = `${currentPhaseLabel} • ${task.text}`;
+        modalTasks.classList.add("auth-modal-hidden");
+        renderTasks();
+    }
 };
 
 
@@ -341,11 +457,6 @@ const qsFocusBox = document.querySelector(".qs-box:nth-child(1)");
 const qsBreakBox = document.querySelector(".qs-box:nth-child(2)");
 
 let qsMode = "focus";
-
-
-// ==========================
-// EVENTOS QUICK SETTINGS
-// ==========================
 
 function openSettingsModal(title, max, currentVal) {
     qsModalTitle.textContent = title;
@@ -416,25 +527,21 @@ const pomodoro = new PomodoroTimer(
         displayPomodoro.textContent = time;
 
         const pill = viewPomodoro.querySelector(".pill");
-        pill.textContent = phaseLabel;
+        if (currentActiveTask) {
+             pill.textContent = `${phaseLabel} • ${currentActiveTask.text}`;
+        } else {
+            pill.textContent = phaseLabel;
+        }
 
         updatePlayButton(pomoBtns.children[0], isRunning);
 
-        // 🔥 LÓGICA DE AUDIO Y NOTIFICACIONES CONECTADA A SETTINGS
         if (finishedPhase) {
-            
-            // 1. SONIDO (Verificar preferencia en localStorage)
-            // Si no existe (null), asumimos true. Si es 'false', no suena.
             const soundEnabled = localStorage.getItem('pref_sound') !== 'false';
-            
             if (soundEnabled) {
                 alarmAudio.currentTime = 0; 
                 alarmAudio.play().catch(e => console.error("Error reproduciendo audio:", e));
             }
-
-            // 2. NOTIFICACIONES (Verificar preferencia y permisos)
             const notifEnabled = localStorage.getItem('pref_notifications') !== 'false';
-
             if (notifEnabled) {
                 if (Notification.permission === "granted") {
                     new Notification("Pomodō", { body: `¡${phaseLabel} completado!` });
@@ -453,7 +560,9 @@ const pomodoro = new PomodoroTimer(
         if (!minutesStudied || minutesStudied <= 0) return;
         saveSession({
             duration: minutesStudied,
-            type: "focus"
+            type: "focus",
+            taskId: currentActiveTask ? currentActiveTask.id : null,
+            taskName: currentActiveTask ? currentActiveTask.text : null
         });
     }
 );
@@ -516,7 +625,6 @@ function activateView(mode) {
     } 
     else if (mode === "timer") {
         viewTimer.classList.add("active-view");
-
         timerSlider.value = customTimer.totalSeconds / 60;
         timerSliderValue.textContent = customTimer.formatTime();
         displayTimer.textContent = customTimer.formatTime();
@@ -547,15 +655,12 @@ tabs.forEach((tab, index) => {
 // BOTONES PLAY / RESET
 // ===========================
 
-// Pomodoro
 pomoBtns.children[0].addEventListener('click', () => pomodoro.startStop());
 pomoBtns.children[1].addEventListener('click', () => pomodoro.reset());
 
-// Timer
 timerBtns.children[0].addEventListener('click', () => customTimer.startStop());
 timerBtns.children[1].addEventListener('click', () => customTimer.reset());
 
-// Stopwatch
 swBtns.children[0].addEventListener('click', () => stopwatch.startStop());
 swBtns.children[1].addEventListener('click', () => stopwatch.reset());
 
