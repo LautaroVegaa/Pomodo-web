@@ -420,10 +420,32 @@ const pomodoro = new PomodoroTimer(
 
         updatePlayButton(pomoBtns.children[0], isRunning);
 
-        // 🔥 LOGICA DE AUDIO AGREGADA AQUI
+        // 🔥 LÓGICA DE AUDIO Y NOTIFICACIONES CONECTADA A SETTINGS
         if (finishedPhase) {
-            alarmAudio.currentTime = 0; // Reiniciar audio
-            alarmAudio.play().catch(e => console.error("Error reproduciendo audio:", e));
+            
+            // 1. SONIDO (Verificar preferencia en localStorage)
+            // Si no existe (null), asumimos true. Si es 'false', no suena.
+            const soundEnabled = localStorage.getItem('pref_sound') !== 'false';
+            
+            if (soundEnabled) {
+                alarmAudio.currentTime = 0; 
+                alarmAudio.play().catch(e => console.error("Error reproduciendo audio:", e));
+            }
+
+            // 2. NOTIFICACIONES (Verificar preferencia y permisos)
+            const notifEnabled = localStorage.getItem('pref_notifications') !== 'false';
+
+            if (notifEnabled) {
+                if (Notification.permission === "granted") {
+                    new Notification("Pomodō", { body: `¡${phaseLabel} completado!` });
+                } else if (Notification.permission !== "denied") {
+                    Notification.requestPermission().then(permission => {
+                        if (permission === "granted") {
+                            new Notification("Pomodō", { body: "¡Tiempo completado!" });
+                        }
+                    });
+                }
+            }
         }
     },
 

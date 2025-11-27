@@ -2,6 +2,10 @@ import { supabase } from './supabase.js';
 
 // Elementos del DOM
 const toggleDarkMode = document.getElementById('toggle-darkmode');
+// --- NUEVOS ELEMENTOS PARA SONIDO Y NOTIFICACIONES ---
+const toggleNotifications = document.getElementById('toggle-notifications');
+const toggleSound = document.getElementById('toggle-sound');
+
 const btnLogout = document.getElementById('btn-logout-settings');
 
 // Elementos del Modal Logout
@@ -71,14 +75,49 @@ async function calculateStats(userId) {
 loadUserProfile();
 
 
-// 2. Manejo de Preferencias
+// ==========================================
+// 2. MANEJO DE PREFERENCIAS (MODIFICADO)
+// ==========================================
+
+// --- A) MODO OSCURO ---
 if (localStorage.getItem('theme') === 'light') {
-    toggleDarkMode.checked = true;
+    if (toggleDarkMode) toggleDarkMode.checked = true;
+}
+if (toggleDarkMode) {
+    toggleDarkMode.addEventListener('change', (e) => {
+        console.log("Tema cambiado:", e.target.checked);
+        // Aquí podrías agregar lógica para guardar 'theme' si quisieras
+    });
 }
 
-toggleDarkMode.addEventListener('change', (e) => {
-    console.log("Tema cambiado:", e.target.checked);
-});
+// --- B) SONIDO ---
+// Cargar estado (por defecto true si no existe 'false')
+const isSoundOn = localStorage.getItem('pref_sound') !== 'false';
+if (toggleSound) toggleSound.checked = isSoundOn;
+
+// Guardar al cambiar
+if (toggleSound) {
+    toggleSound.addEventListener('change', (e) => {
+        localStorage.setItem('pref_sound', e.target.checked);
+    });
+}
+
+// --- C) NOTIFICACIONES ---
+// Cargar estado (por defecto true si no existe 'false')
+const isNotifOn = localStorage.getItem('pref_notifications') !== 'false';
+if (toggleNotifications) toggleNotifications.checked = isNotifOn;
+
+// Guardar al cambiar y pedir permiso
+if (toggleNotifications) {
+    toggleNotifications.addEventListener('change', (e) => {
+        localStorage.setItem('pref_notifications', e.target.checked);
+        
+        // Si el usuario activa el switch, pedimos permiso al navegador
+        if (e.target.checked && Notification.permission !== "granted") {
+            Notification.requestPermission();
+        }
+    });
+}
 
 
 // 3. Lógica de Botón Principal (Cerrar/Iniciar)
